@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><projectDescription>
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
 	<name>Firmware-Development</name>
-	<comment/>
+	<comment />
 	<projects>
 	</projects>
 	<buildSpec>
@@ -14,7 +15,7 @@
 				</dictionary>
 				<dictionary>
 					<key>?name?</key>
-					<value/>
+					<value />
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.append_environment</key>
@@ -22,7 +23,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildArguments</key>
-					<value/>
+					<value />
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildCommand</key>
@@ -210,5 +211,69 @@
 			<type>1</type>
 			<location>PARENT-2-PROJECT_LOC/Core/Src/system_stm32f0xx.c</location>
 		</link>
-  </linkedResources>
+  <link>
+      <name>Application/User/USB_DEVICE</name>
+      <type>2</type>
+      <locationURI>virtual:/virtual</locationURI>
+    </link><link>
+      <name>Application/User/USB_DEVICE/App</name>
+      <type>2</type>
+      <locationURI>virtual:/virtual</locationURI>
+    </link><link>
+      <name>Application/User/USB_DEVICE/App/usb_device.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/USB_DEVICE/App/usb_device.c</location>
+    </link><link>
+      <name>Application/User/USB_DEVICE/App/usbd_desc.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/USB_DEVICE/App/usbd_desc.c</location>
+    </link><link>
+      <name>Application/User/USB_DEVICE/App/usbd_cdc_if.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/USB_DEVICE/App/usbd_cdc_if.c</location>
+    </link><link>
+      <name>Application/User/USB_DEVICE/Target</name>
+      <type>2</type>
+      <locationURI>virtual:/virtual</locationURI>
+    </link><link>
+      <name>Application/User/USB_DEVICE/Target/usbd_conf.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/USB_DEVICE/Target/usbd_conf.c</location>
+    </link><link>
+      <name>Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_usb.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_ll_usb.c</location>
+    </link><link>
+      <name>Drivers/STM32F0xx_HAL_Driver/stm32f0xx_hal_pcd.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_pcd.c</location>
+    </link><link>
+      <name>Drivers/STM32F0xx_HAL_Driver/stm32f0xx_hal_pcd_ex.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_pcd_ex.c</location>
+    </link><link>
+      <name>Middlewares</name>
+      <type>2</type>
+      <locationURI>virtual:/virtual</locationURI>
+    </link><link>
+      <name>Middlewares/USB_Device_Library</name>
+      <type>2</type>
+      <locationURI>virtual:/virtual</locationURI>
+    </link><link>
+      <name>Middlewares/USB_Device_Library/usbd_core.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c</location>
+    </link><link>
+      <name>Middlewares/USB_Device_Library/usbd_ctlreq.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c</location>
+    </link><link>
+      <name>Middlewares/USB_Device_Library/usbd_ioreq.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c</location>
+    </link><link>
+      <name>Middlewares/USB_Device_Library/usbd_cdc.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c</location>
+    </link></linkedResources>
 </projectDescription>

@@ -1,0 +1,24 @@
+20:15:22 **** Incremental Build of configuration Debug for project Firmware-Development ****
+Info: Internal Builder is used for build
+arm-atollic-eabi-gcc -c -mthumb -mcpu=cortex-m0 -std=gnu11 -DUSE_HAL_DRIVER -DSTM32F070xB -I../../../Core/Inc -I../../../Drivers/STM32F0xx_HAL_Driver/Inc -I../../../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../../../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../../../Drivers/CMSIS/Include -I../../../USB_DEVICE/App -I../../../USB_DEVICE/Target -I../../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../../../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -ffunction-sections -fdata-sections -g -fstack-usage -Wall -specs=nano.specs -o Application\User\Core\main.o ..\..\..\Core\Src\main.c 
+arm-atollic-eabi-gcc -c -mthumb -mcpu=cortex-m0 -std=gnu11 -DUSE_HAL_DRIVER -DSTM32F070xB -I../../../Core/Inc -I../../../Drivers/STM32F0xx_HAL_Driver/Inc -I../../../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I../../../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../../../Drivers/CMSIS/Include -I../../../USB_DEVICE/App -I../../../USB_DEVICE/Target -I../../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../../../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -ffunction-sections -fdata-sections -g -fstack-usage -Wall -specs=nano.specs -o Application\User\Core\stm32f0xx_it.o ..\..\..\Core\Src\stm32f0xx_it.c 
+..\..\..\Core\Src\stm32f0xx_it.c: In function 'EXTI0_1_IRQHandler':
+..\..\..\Core\Src\stm32f0xx_it.c:152:4: warning: implicit declaration of function 'CDC_Transmit_FS' [-Wimplicit-function-declaration]
+    CDC_Transmit_FS("1", sizeof ("1"));
+    ^~~~~~~~~~~~~~~
+arm-atollic-eabi-gcc -o Firmware-Development.elf Application\TrueSTUDIO\startup_stm32f070xb.o Application\TrueSTUDIO\syscalls.o Application\User\Core\main.o Application\User\Core\stm32f0xx_hal_msp.o Application\User\Core\stm32f0xx_it.o Application\User\USB_DEVICE\App\usb_device.o Application\User\USB_DEVICE\App\usbd_cdc_if.o Application\User\USB_DEVICE\App\usbd_desc.o Application\User\USB_DEVICE\Target\usbd_conf.o Drivers\CMSIS\system_stm32f0xx.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_cortex.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_dma.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_exti.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_flash.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_flash_ex.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_gpio.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_i2c.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_i2c_ex.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_pcd.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_pcd_ex.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_pwr.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_pwr_ex.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_rcc.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_rcc_ex.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_tim.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_hal_tim_ex.o Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_usb.o Middlewares\USB_Device_Library\usbd_cdc.o Middlewares\USB_Device_Library\usbd_core.o Middlewares\USB_Device_Library\usbd_ctlreq.o Middlewares\USB_Device_Library\usbd_ioreq.o -mthumb -mcpu=cortex-m0 -T../STM32F070CB_FLASH.ld -specs=nosys.specs -static -Wl,-Map=Firmware-Development.map -Wl,--gc-sections -Wl,--defsym=malloc_getpagesize_P=0x80 -Wl,--start-group -lc -lm -Wl,--end-group -specs=nano.specs 
+C:\Program Files (x86)\Atollic\TrueSTUDIO for STM32 9.3.0\ide\jre\bin\java -jar C:\Program Files (x86)\Atollic\TrueSTUDIO for STM32 9.3.0\Tools\arm-atollic-reports.jar sizeinfo list Firmware-Development.elf 
+Generate build reports...
+Print size information
+   text	   data	    bss	    dec	    hex	filename
+  31908	    388	   6160	  38456	   9638	Firmware-Development.elf
+Print size information done
+Generate listing file
+Output sent to: Firmware-Development.list
+Generate listing file done
+Generate build reports done
+arm-atollic-eabi-objcopy.exe -O ihex Firmware-Development.elf Firmware-Development.hex 
+Info: Parallel threads used: 2
+
+20:15:23 Build Finished (took 968ms)
+

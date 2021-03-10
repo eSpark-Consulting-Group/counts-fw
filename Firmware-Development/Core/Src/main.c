@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -85,6 +86,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -93,6 +95,65 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+//	  if (HAL_GPIO_ReadPin(GPIOA, button1_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led1_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("1", sizeof ("1"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led1_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button2_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led2_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("2", sizeof ("2"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led2_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button3_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led3_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("3", sizeof ("3"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led3_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button4_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led4_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("4", sizeof ("4"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led4_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button5_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led5_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("5", sizeof ("5"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led5_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button6_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led6_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("6", sizeof ("6"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led6_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button7_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led7_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("7", sizeof ("7"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led7_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button8_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led8_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("8", sizeof ("8"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led8_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button9_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led9_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("9", sizeof ("9"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led9_Pin, GPIO_PIN_RESET); }
+//
+//	  if (HAL_GPIO_ReadPin(GPIOA, button10_Pin) == 0) {
+//		  HAL_GPIO_WritePin(GPIOB, led10_Pin, GPIO_PIN_SET);
+//		  CDC_Transmit_FS("10", sizeof ("10"));
+//	  }
+//	  else { HAL_GPIO_WritePin(GPIOB, led10_Pin, GPIO_PIN_RESET); }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -108,14 +169,17 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
+  RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -124,11 +188,18 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB;
+  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL;
+
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }
@@ -144,17 +215,45 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOF_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Test_LED_GPIO_Port, Test_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, led1_Pin|led2_Pin|led3_Pin|led4_Pin
+                          |led5_Pin|led6_Pin|led7_Pin|led8_Pin
+                          |led9_Pin|led10_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : Test_LED_Pin */
-  GPIO_InitStruct.Pin = Test_LED_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  /*Configure GPIO pins : button1_Pin button2_Pin button3_Pin button4_Pin
+                           button5_Pin button6_Pin button7_Pin button8_Pin
+                           button9_Pin button10_Pin */
+  GPIO_InitStruct.Pin = button1_Pin|button2_Pin|button3_Pin|button4_Pin
+                          |button5_Pin|button6_Pin|button7_Pin|button8_Pin
+                          |button9_Pin|button10_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : led1_Pin led2_Pin led3_Pin led4_Pin
+                           led5_Pin led6_Pin led7_Pin led8_Pin
+                           led9_Pin led10_Pin */
+  GPIO_InitStruct.Pin = led1_Pin|led2_Pin|led3_Pin|led4_Pin
+                          |led5_Pin|led6_Pin|led7_Pin|led8_Pin
+                          |led9_Pin|led10_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(Test_LED_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_1_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI2_3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI2_3_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
 
 }
 

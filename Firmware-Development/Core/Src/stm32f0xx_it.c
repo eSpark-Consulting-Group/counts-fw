@@ -56,7 +56,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
+extern PCD_HandleTypeDef hpcd_USB_FS;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -140,6 +140,127 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f0xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles EXTI line 0 and 1 interrupts.
+  */
+void EXTI0_1_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_1_IRQn 0 */
+  if (HAL_GPIO_ReadPin(GPIOA, button1_Pin) == 0) {
+	  HAL_GPIO_WritePin(GPIOB, led1_Pin, GPIO_PIN_SET);
+	  CDC_Transmit_FS("1", sizeof ("1"));
+  }
+
+  else { HAL_GPIO_WritePin(GPIOB, led1_Pin, GPIO_PIN_RESET); }
+  /* USER CODE END EXTI0_1_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
+  /* USER CODE BEGIN EXTI0_1_IRQn 1 */
+  if (HAL_GPIO_ReadPin(GPIOA, button2_Pin) == 0) {
+  	HAL_GPIO_WritePin(GPIOB, led2_Pin, GPIO_PIN_SET);
+  	CDC_Transmit_FS("2", sizeof ("2"));
+  }
+
+  else { HAL_GPIO_WritePin(GPIOB, led2_Pin, GPIO_PIN_RESET); }
+  /* USER CODE END EXTI0_1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line 2 and 3 interrupts.
+  */
+void EXTI2_3_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI2_3_IRQn 0 */
+  if (HAL_GPIO_ReadPin(GPIOA, button3_Pin) == 0) {
+	  HAL_GPIO_WritePin(GPIOB, led3_Pin, GPIO_PIN_SET);
+	  CDC_Transmit_FS("3", sizeof ("3"));
+  }
+
+  else { HAL_GPIO_WritePin(GPIOB, led3_Pin, GPIO_PIN_RESET); }
+  /* USER CODE END EXTI2_3_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_2);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
+  /* USER CODE BEGIN EXTI2_3_IRQn 1 */
+  if (HAL_GPIO_ReadPin(GPIOA, button4_Pin) == 0) {
+	  HAL_GPIO_WritePin(GPIOB, led4_Pin, GPIO_PIN_SET);
+	  CDC_Transmit_FS("4", sizeof ("4"));
+  }
+
+  else { HAL_GPIO_WritePin(GPIOB, led4_Pin, GPIO_PIN_RESET); }
+  /* USER CODE END EXTI2_3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line 4 to 15 interrupts.
+  */
+void EXTI4_15_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI4_15_IRQn 0 */
+	if (HAL_GPIO_ReadPin(GPIOA, button5_Pin) == 0) {
+		HAL_GPIO_WritePin(GPIOB, led5_Pin, GPIO_PIN_SET);
+		CDC_Transmit_FS("5", sizeof ("5"));
+	}
+
+	else { HAL_GPIO_WritePin(GPIOB, led5_Pin, GPIO_PIN_RESET); }
+
+	if (HAL_GPIO_ReadPin(GPIOA, button6_Pin) == 0) {
+		HAL_GPIO_WritePin(GPIOB, led6_Pin, GPIO_PIN_SET);
+		CDC_Transmit_FS("6", sizeof ("6"));
+	}
+
+	else { HAL_GPIO_WritePin(GPIOB, led6_Pin, GPIO_PIN_RESET); }
+
+	if (HAL_GPIO_ReadPin(GPIOA, button7_Pin) == 0) {
+		HAL_GPIO_WritePin(GPIOB, led7_Pin, GPIO_PIN_SET);
+		CDC_Transmit_FS("7", sizeof ("7"));
+	}
+
+	else { HAL_GPIO_WritePin(GPIOB, led7_Pin, GPIO_PIN_RESET); }
+  /* USER CODE END EXTI4_15_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_5);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_6);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_7);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_8);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_9);
+  /* USER CODE BEGIN EXTI4_15_IRQn 1 */
+  if (HAL_GPIO_ReadPin(GPIOA, button8_Pin) == 0) {
+	  HAL_GPIO_WritePin(GPIOB, led8_Pin, GPIO_PIN_SET);
+	  CDC_Transmit_FS("8", sizeof ("8"));
+  }
+
+  else { HAL_GPIO_WritePin(GPIOB, led8_Pin, GPIO_PIN_RESET); }
+
+  if (HAL_GPIO_ReadPin(GPIOA, button9_Pin) == 0) {
+	  HAL_GPIO_WritePin(GPIOB, led9_Pin, GPIO_PIN_SET);
+  	  CDC_Transmit_FS("9", sizeof ("9"));
+  }
+
+  else { HAL_GPIO_WritePin(GPIOB, led9_Pin, GPIO_PIN_RESET); }
+
+  if (HAL_GPIO_ReadPin(GPIOA, button10_Pin) == 0) {
+	  HAL_GPIO_WritePin(GPIOB, led10_Pin, GPIO_PIN_SET);
+	  CDC_Transmit_FS("10", sizeof ("10"));
+  }
+
+  else { HAL_GPIO_WritePin(GPIOB, led10_Pin, GPIO_PIN_RESET); }
+  /* USER CODE END EXTI4_15_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USB global interrupt / USB wake-up interrupt through EXTI line 18.
+  */
+void USB_IRQHandler(void)
+{
+  /* USER CODE BEGIN USB_IRQn 0 */
+
+  /* USER CODE END USB_IRQn 0 */
+  HAL_PCD_IRQHandler(&hpcd_USB_FS);
+  /* USER CODE BEGIN USB_IRQn 1 */
+
+  /* USER CODE END USB_IRQn 1 */
+}
 
 /* USER CODE BEGIN 1 */
 

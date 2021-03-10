@@ -128,3 +128,6 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.cdt.core 1 0 2021-03-10 18:09:37.318
 !MESSAGE Indexed 'Firmware-Development' (20 sources, 26 headers) in 1.96 sec: 2,105 declarations; 16,227 references; 12 unresolved inclusions; 41 syntax errors; 2,002 unresolved names (9.8%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2021-03-10 18:53:34.492
+!MESSAGE Indexed 'GPIO_Test' (30 sources, 109 headers) in 4.11 sec: 9,455 declarations; 33,006 references; 0 unresolved inclusions; 76 syntax errors; 62 unresolved names (0.15%)
