@@ -131,3 +131,6 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.cdt.core 1 0 2021-03-10 18:53:34.492
 !MESSAGE Indexed 'GPIO_Test' (30 sources, 109 headers) in 4.11 sec: 9,455 declarations; 33,006 references; 0 unresolved inclusions; 76 syntax errors; 62 unresolved names (0.15%)
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2021-03-10 20:55:27.065
+!MESSAGE Unloading product manager
