@@ -1,0 +1,19 @@
+[DesignatorManager]
+
+[SheetNumberManager]
+SheetNumberOrder=Display Order
+SheetNumberMethod=Increasing
+DocumentName0=Top Sheet.SchDoc
+UniqueIDPath0=
+SheetNumber0=
+DocumentName1=Charging_Section.SchDoc
+UniqueIDPath1=\QAPIUXLX
+SheetNumber1=
+DocumentName2=RC Receiver Section.SchDoc
+UniqueIDPath2=\PLXMCVQU
+SheetNumber2=
+DocumentName3=Buck _Section.SchDoc
+UniqueIDPath3=\UVLIKRPX
+SheetNumber3=
+
+
