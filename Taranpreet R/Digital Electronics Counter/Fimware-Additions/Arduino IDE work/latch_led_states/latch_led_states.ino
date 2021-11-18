@@ -59,6 +59,8 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ACT9), toggle_led9, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ACT10), toggle_led10, CHANGE);
 
+  Serial.begin(115200);
+
 
 }
 
@@ -71,11 +73,13 @@ void loop() {
 void toggle_led1()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT1) == HIGH)
   {
+    Serial.println("A");
+
     state = !state;
     digitalWrite(P1, state);
   }
@@ -84,11 +88,13 @@ void toggle_led1()
 void toggle_led2()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT2) == HIGH)
   {
+    Serial.println("B");
+    
     state = !state;
     digitalWrite(P2, state);
   }
@@ -98,7 +104,7 @@ void toggle_led2()
 void toggle_led3()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT3) == HIGH)
@@ -111,7 +117,7 @@ void toggle_led3()
 void toggle_led4()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT4) == HIGH)
@@ -124,7 +130,7 @@ void toggle_led4()
 void toggle_led5()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT5) == HIGH)
@@ -137,7 +143,7 @@ void toggle_led5()
 void toggle_led6()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT6) == HIGH)
@@ -150,7 +156,7 @@ void toggle_led6()
 void toggle_led7()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT7) == HIGH)
@@ -163,7 +169,7 @@ void toggle_led7()
 void toggle_led8()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT8) == HIGH)
@@ -176,7 +182,7 @@ void toggle_led8()
 void toggle_led9()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT9) == HIGH)
@@ -189,7 +195,7 @@ void toggle_led9()
 void toggle_led10()
 {
   static bool state;
-  
+
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT10) == HIGH)
