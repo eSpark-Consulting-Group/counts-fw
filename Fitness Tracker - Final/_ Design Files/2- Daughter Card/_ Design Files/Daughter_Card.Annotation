@@ -1,0 +1,19 @@
+[DesignatorManager]
+
+[SheetNumberManager]
+SheetNumberOrder=Display Order
+SheetNumberMethod=Increasing
+DocumentName0=Controller_Section.SchDoc
+UniqueIDPath0=\LYQVWTFI
+SheetNumber0=4
+DocumentName1=Peripheral_Section.SchDoc
+UniqueIDPath1=\MAXKHXJQ
+SheetNumber1=2
+DocumentName2=Power_Section.SchDoc
+UniqueIDPath2=\SLPBOJGN
+SheetNumber2=3
+DocumentName3=Top_Sheet.SchDoc
+UniqueIDPath3=
+SheetNumber3=1
+
+
