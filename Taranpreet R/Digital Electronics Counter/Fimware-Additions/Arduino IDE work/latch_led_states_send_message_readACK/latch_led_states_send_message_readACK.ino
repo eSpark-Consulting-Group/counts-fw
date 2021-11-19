@@ -21,7 +21,7 @@ const int ACT9 = PA8;
 const int ACT10 = PA9;
 
 
-#define LOOP_RUN 65000
+#define LOOP_RUN 100000
 
 void setup() {
   // put your setup code here, to run once:
@@ -73,23 +73,28 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  /*if(readResponse())
-  {
-    digitalWrite(P3, HIGH);
-  }*/
+
+  /*static bool state = false;
+
+    if(readResponse())
+    {
+    state = !state;
+    digitalWrite(P3, state);
+    }*/
 }
 
 void toggle_led1()
 {
-  static bool state;
+  static bool state = false;
 
   for (int i = 0; i <= 32000; i++);
 
   if (digitalRead(ACT1) == HIGH)
   {
+
     Serial.print("1");
 
-    for (int i = 0; i <= LOOP_RUN; i++);
+    while(!Serial.available());
 
     if (readResponse())
     {
@@ -109,7 +114,7 @@ void toggle_led2()
   {
     Serial.print("2");
 
-    for (int i = 0; i <= LOOP_RUN; i++);
+    while(!Serial.available());
 
     if (readResponse())
     {
@@ -128,10 +133,15 @@ void toggle_led3()
 
   if (digitalRead(ACT3) == HIGH)
   {
-    Serial.println("3");
+    Serial.print("3");
 
-    state = !state;
-    digitalWrite(P3, state);
+    while(!Serial.available());
+
+    if (readResponse())
+    {
+      state = !state;
+      digitalWrite(P3, state);
+    }
   }
 }
 
@@ -143,10 +153,15 @@ void toggle_led4()
 
   if (digitalRead(ACT4) == HIGH)
   {
-    Serial.println("4");
+    Serial.print("4");
 
-    state = !state;
-    digitalWrite(P4, state);
+    while(!Serial.available());
+
+    if (readResponse())
+    {
+      state = !state;
+      digitalWrite(P4, state);
+    }
   }
 }
 
@@ -158,10 +173,15 @@ void toggle_led5()
 
   if (digitalRead(ACT5) == HIGH)
   {
-    Serial.println("5");
+    Serial.print("5");
 
-    state = !state;
-    digitalWrite(P5, state);
+    while(!Serial.available());
+
+    if (readResponse)
+    {
+      state = !state;
+      digitalWrite(P5, state);
+    }
   }
 }
 
@@ -173,10 +193,15 @@ void toggle_led6()
 
   if (digitalRead(ACT6) == HIGH)
   {
-    Serial.println("6");
+    Serial.print("6");
 
-    state = !state;
-    digitalWrite(P6, state);
+    while(!Serial.available());
+
+    if (readResponse())
+    {
+      state = !state;
+      digitalWrite(P6, state);
+    }
   }
 }
 
@@ -188,10 +213,15 @@ void toggle_led7()
 
   if (digitalRead(ACT7) == HIGH)
   {
-    Serial.println("7");
+    Serial.print("7");
 
-    state = !state;
-    digitalWrite(P7, state);
+    while(!Serial.available());
+
+    if (readResponse())
+    {
+      state = !state;
+      digitalWrite(P7, state);
+    }
   }
 }
 
@@ -203,10 +233,15 @@ void toggle_led8()
 
   if (digitalRead(ACT8) == HIGH)
   {
-    Serial.println("8");
+    Serial.print("8");
 
-    state = !state;
-    digitalWrite(P8, state);
+    while(!Serial.available());
+
+    if (readResponse())
+    {
+      state = !state;
+      digitalWrite(P8, state);
+    }
   }
 }
 
@@ -218,10 +253,15 @@ void toggle_led9()
 
   if (digitalRead(ACT9) == HIGH)
   {
-    Serial.println("9");
+    Serial.print("9");
 
-    state = !state;
-    digitalWrite(P9, state);
+    while(!Serial.available());
+
+    if (readResponse())
+    {
+      state = !state;
+      digitalWrite(P9, state);
+    }
   }
 }
 
@@ -233,10 +273,15 @@ void toggle_led10()
 
   if (digitalRead(ACT10) == HIGH)
   {
-    Serial.println("10");
+    Serial.print("10");
 
-    state = !state;
-    digitalWrite(P10, state);
+    while(!Serial.available());
+
+    if (readResponse())
+    {
+      state = !state;
+      digitalWrite(P10, state);
+    }
   }
 }
 
@@ -250,10 +295,13 @@ bool readResponse()
     res += c;
   }
 
-  if (res == "ACK")
+  if ((res == "ACK") and (res.length() == 3))
   {
     res = "";
     return true;
+  } else if (res.length() > 3)
+  {
+    res = "";
   }
 
   return false;
