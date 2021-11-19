@@ -59,7 +59,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ACT9), toggle_led9, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ACT10), toggle_led10, CHANGE);
 
-  Serial.begin(115200);
+  Serial.begin(9600);
 
 
 }
