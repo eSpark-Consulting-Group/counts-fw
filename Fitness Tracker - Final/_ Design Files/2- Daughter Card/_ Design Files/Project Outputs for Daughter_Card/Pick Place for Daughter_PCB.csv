@@ -1,0 +1,51 @@
+Altium Designer Pick and Place Locations
+C:\Users\eSpark Group\Desktop\Final Core Files\Fitness Tracker - Final\_ Design Files\2- Daughter Card\_ Design Files\Project Outputs for Daughter_Card\Pick Place for Daughter_PCB.csv
+
+========================================================================================================================
+File Design Information:
+
+Date:       16/10/20
+Time:       12:51
+Revision:   Not in VersionControl
+Variant:    No variations
+Units used: mil
+
+"Designator","Layer","Footprint","Center-X(mil)","Center-Y(mil)","Rotation","Ref-X(mil)","Ref-Y(mil)","Pad-X(mil)","Pad-Y(mil)"
+"LED2","TopLayer","LED_0805","138,013mil","621,994mil","270","138,006mil","622,000mil","138,013mil","661,994mil"
+"LED1","TopLayer","LED_0805","595,006mil","621,994mil","270","595,000mil","622,000mil","595,006mil","661,994mil"
+"P5","TopLayer","TEST_POINT","520,000mil","101,000mil","0","520,000mil","101,000mil","520,000mil","101,000mil"
+"P4","TopLayer","TEST_POINT","244,000mil","101,000mil","0","244,000mil","101,000mil","244,000mil","101,000mil"
+"P3","TopLayer","TEST_POINT","382,000mil","101,000mil","0","382,000mil","101,000mil","382,000mil","101,000mil"
+"P2","TopLayer","TEST_POINT","658,000mil","101,000mil","0","658,000mil","101,000mil","658,000mil","101,000mil"
+"SW_3","BottomLayer","HDR1X2","109,298mil","108,000mil","270","109,298mil","158,000mil","109,298mil","158,000mil"
+"CF2","TopLayer","Cap0402","854,000mil","530,000mil","90","854,000mil","530,000mil","854,000mil","511,500mil"
+"CF1","TopLayer","Cap0402","852,000mil","191,000mil","270","852,000mil","191,000mil","852,000mil","209,500mil"
+"C6","TopLayer","Cap0603","836,007mil","63,304mil","90","836,007mil","63,304mil","836,007mil","93,304mil"
+"C5","TopLayer","Cap0402","782,000mil","63,000mil","270","782,000mil","63,000mil","782,000mil","81,500mil"
+"C4","BottomLayer","Cap0402","207,517mil","317,413mil","270","207,517mil","317,413mil","207,517mil","335,913mil"
+"C3","BottomLayer","Cap0402","207,517mil","966,995mil","270","207,517mil","966,995mil","207,517mil","985,495mil"
+"SW_2","BottomLayer","HDR1X2","110,000mil","333,000mil","270","110,000mil","383,000mil","110,000mil","383,000mil"
+"SW_1","BottomLayer","HDR1X2","112,000mil","949,000mil","270","112,000mil","999,000mil","112,000mil","999,000mil"
+"SW2","TopLayer","B3FS-1012P","365,000mil","317,417mil","180","365,000mil","317,417mil","207,520mil","406,000mil"
+"SW1","TopLayer","B3FS-1012P","369,000mil","932,000mil","180","369,000mil","932,000mil","211,520mil","1020,583mil"
+"U2","BottomLayer","RN42-I/RM","678,000mil","1072,000mil","90","678,000mil","1072,000mil","920,126mil","820,032mil"
+"U1","TopLayer","ATTINY1616-SFR","817,000mil","1041,000mil","0","817,000mil","1041,000mil","633,930mil","1266,000mil"
+"SWR2","TopLayer","B3U-1000P","919,000mil","295,000mil","360","919,000mil","295,000mil","852,071mil","295,000mil"
+"SWG1","TopLayer","B3U-1000P","921,000mil","420,000mil","360","921,000mil","420,000mil","854,071mil","420,000mil"
+"R13","BottomLayer","Res0402","114,000mil","465,000mil","180","114,000mil","465,000mil","132,500mil","465,000mil"
+"R12","BottomLayer","Res0402","114,000mil","1085,000mil","180","114,000mil","1085,000mil","132,500mil","1085,000mil"
+"R11","TopLayer","Res0603","693,000mil","1337,780mil","180","693,000mil","1337,780mil","663,000mil","1337,780mil"
+"R10","TopLayer","Res0603","344,000mil","1172,000mil","90","344,000mil","1172,000mil","344,000mil","1202,000mil"
+"R9","TopLayer","Res0603","811,000mil","1337,780mil","360","811,000mil","1337,780mil","841,000mil","1337,780mil"
+"R8","TopLayer","Res0603","825,000mil","659,000mil","270","825,000mil","659,000mil","825,000mil","629,000mil"
+"R7","BottomLayer","Res0402","69,000mil","690,000mil","90","69,000mil","690,000mil","69,000mil","671,500mil"
+"R6","BottomLayer","Res0402","527,000mil","690,000mil","90","527,000mil","690,000mil","527,000mil","671,500mil"
+"R5","TopLayer","Res0603","404,000mil","1172,000mil","90","404,000mil","1172,000mil","404,000mil","1202,000mil"
+"R4","TopLayer","Res0402","459,000mil","1167,000mil","270","459,000mil","1167,000mil","459,000mil","1185,500mil"
+"R3","TopLayer","Res0402","799,000mil","401,000mil","270","799,000mil","401,000mil","799,000mil","419,500mil"
+"R2","TopLayer","Res0402","799,000mil","313,000mil","90","799,000mil","313,000mil","799,000mil","294,500mil"
+"R1","TopLayer","Res0402","1141,000mil","604,000mil","180","1141,000mil","604,000mil","1159,500mil","604,000mil"
+"P1","TopLayer","HDR1X2","1109,000mil","727,000mil","180","1159,000mil","727,000mil","1159,000mil","727,000mil"
+"J1","BottomLayer","CR1220-2","920,000mil","351,732mil","90","920,000mil","351,732mil","920,000mil","36,772mil"
+"C2","TopLayer","Cap0402","554,000mil","1248,000mil","270","554,000mil","1248,000mil","554,000mil","1266,500mil"
+"C1","BottomLayer","Cap0402","426,000mil","746,000mil","180","426,000mil","746,000mil","444,500mil","746,000mil"

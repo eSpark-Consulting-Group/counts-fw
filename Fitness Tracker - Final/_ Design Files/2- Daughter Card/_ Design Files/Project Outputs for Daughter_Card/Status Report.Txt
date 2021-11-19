@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [Daughter_Card.PrjPCB]
+   Generated File[Daughter_PCB.TXT]
+   Generated File[Daughter_PCB.LDP]
+   Generated File[Daughter_PCB.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 12:53:02 PM On 10/16/2020
