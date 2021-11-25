@@ -26,7 +26,7 @@ static int activity_count = 0;
 static int round_count = 0;
 static bool turn_off_leds = false;
 
-#define TIMEOUT 2000
+#define TIMEOUT 5000
 
 
 #define LOOP_RUN 100000
@@ -101,7 +101,7 @@ void loop() {
 
   if (Serial.available())
   {
-    if (Serial.peek() == 'n')
+    if (Serial.peek() == 'N')
     {
       Serial.read();
       activity_count = 1;
@@ -117,7 +117,7 @@ void loop() {
     activity_count = 1;
     round_count++;
     turn_off_leds = true;
-    Serial.print("r");
+    Serial.print("R");
   }
 
   if (turn_off_leds == true)
@@ -147,7 +147,7 @@ void toggle_led1()
 {
   static bool state = false;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT1) == HIGH)
   {
@@ -187,7 +187,7 @@ void toggle_led2()
 {
   static bool state;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT2) == HIGH)
   {
@@ -226,7 +226,7 @@ void toggle_led3()
 {
   static bool state;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT3) == HIGH)
   {
@@ -264,7 +264,7 @@ void toggle_led4()
 {
   static bool state;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT4) == HIGH)
   {
@@ -303,7 +303,7 @@ void toggle_led5()
   static bool state;
   String res = "";
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT5) == HIGH)
   {
@@ -359,7 +359,7 @@ void toggle_led6()
 {
   static bool state;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT6) == HIGH)
   {
@@ -397,7 +397,7 @@ void toggle_led7()
 {
   static bool state;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT7) == HIGH)
   {
@@ -436,7 +436,7 @@ void toggle_led8()
 {
   static bool state;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT8) == HIGH)
   {
@@ -474,7 +474,7 @@ void toggle_led9()
 {
   static bool state;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   if (digitalRead(ACT9) == HIGH)
   {
@@ -512,7 +512,7 @@ void toggle_led10()
 {
   static bool state;
 
-  for (int i = 0; i <= 32000; i++);
+  for (int i = 0; i <= LOOP_RUN; i++);
 
   turn_off_leds = true;
 
