@@ -6,9 +6,16 @@ static int activity_count = 1;
 #define LOOP_RUN 100000
 #define TIMEOUT 5000
 
+unsigned long previousMillis = 0;
+const long interval = 1500;
+
+unsigned long previousMillis_1 = 0;
+const long interval_1 = 1500;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
+ // Serial.print("AT+NAME=ITeadStudio\r\n");
 
   pinMode(round_sw, INPUT_PULLUP);
   pinMode(activity_sw, INPUT_PULLUP);
@@ -61,19 +68,22 @@ void loop() {
 void send_round()
 {
   for (int i = 0; i < 32000; i++);
-
-  if (digitalRead(round_sw) == HIGH)
+  unsigned long currentMillis_1 = millis();
+  if ((digitalRead(round_sw) == HIGH)  && (currentMillis_1 - previousMillis_1 >= interval_1))
+  {
     Serial.print("R");
+    previousMillis_1 = currentMillis_1;
+  }
 }
 
 void send_activity()
 {
   for (unsigned long i = 0; i < 64000; i++);
-
-  if (digitalRead(activity_sw))
+  unsigned long currentMillis = millis();
+  if (digitalRead(activity_sw) && (currentMillis - previousMillis >= interval))
   {
-    Serial.print(String(activity_count++));
-
+    Serial.print("D"); //String(activity_count++)
+    previousMillis = currentMillis;
     //unsigned long time_millis = millis();
     //while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
 
