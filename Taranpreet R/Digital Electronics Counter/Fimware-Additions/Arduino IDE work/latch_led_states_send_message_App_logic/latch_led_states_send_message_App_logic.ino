@@ -104,7 +104,7 @@ void loop() {
     if (Serial.peek() == 'N')
     {
       Serial.read();
-      activity_count = 1;
+      activity_count = 0;
       round_count = 0;
       turn_off_leds = true;
     }
@@ -149,6 +149,9 @@ void toggle_led1()
 
   //for (unsigned long i = 0; i <= LOOP_RUN; i++);
 
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000)
+
   while (digitalRead(ACT1) == LOW);
 
   if (digitalRead(ACT1) == HIGH)
@@ -183,6 +186,9 @@ void toggle_led1()
     if (readResponse())
     {
       activity_count++;
+
+      /*Serial.println("Activity count");
+        Serial.println(activity_count);*/
       state = !state;
       digitalWrite(P1, true);
     }
@@ -198,6 +204,9 @@ void toggle_led2()
   static bool state;
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000);
 
   while (digitalRead(ACT2) == LOW);
 
@@ -232,6 +241,10 @@ void toggle_led2()
     if (readResponse())
     {
       activity_count++;
+
+      /*Serial.println("Activity count");
+        Serial.println(activity_count);*/
+
       state = !state;
       digitalWrite(P2, true);
     }
@@ -247,6 +260,9 @@ void toggle_led3()
   static bool state;
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000)
 
   while (digitalRead(ACT3) == LOW);
 
@@ -281,6 +297,10 @@ void toggle_led3()
     if (readResponse())
     {
       activity_count++;
+
+      /*Serial.println("Activity count");
+        Serial.println(activity_count);*/
+
       state = !state;
       digitalWrite(P3, true);
     }
@@ -295,6 +315,9 @@ void toggle_led4()
   static bool state;
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000)
 
   while (digitalRead(ACT4) == LOW);
 
@@ -329,6 +352,9 @@ void toggle_led4()
     if (readResponse())
     {
       activity_count++;
+      /*Serial.println("Activity count");
+        Serial.println(activity_count);*/
+
       state = !state;
       digitalWrite(P4, true);
     }
@@ -344,6 +370,9 @@ void toggle_led5()
   String res = "";
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000)
 
   while (digitalRead(ACT5) == LOW);
 
@@ -387,6 +416,9 @@ void toggle_led5()
       {
         res = "";
         activity_count++;
+        /*Serial.println("Activity count");
+          Serial.println(activity_count);*/
+
         state = !state;
         digitalWrite(P5, true);
       }
@@ -401,8 +433,12 @@ void toggle_led5()
 void toggle_led6()
 {
   static bool state;
+  String res = "";
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000);
 
   while (digitalRead(ACT6) == LOW);
 
@@ -431,18 +467,45 @@ void toggle_led6()
       Serial.print(String(round_count) + "6");
     }
 
-    /*unsigned long time_millis = millis();
-      while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));*/
+    unsigned long time_millis = millis();
+    while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
 
-    if (readResponse())
+    if (Serial.available())
     {
-      activity_count++;
-      state = !state;
-      digitalWrite(P6, true);
+      while (Serial.available())
+      {
+        char c = Serial.read();
+        res += c;
+      }
+
+      if ((res == "ACK"))
+      {
+        res = "";
+        activity_count++;
+        /*Serial.println("Activity count");
+          Serial.println(activity_count);*/
+
+        state = !state;
+        digitalWrite(P6, true);
+      }
+
     }
 
-    unsigned long time_millis2 = millis();
-    while ((millis() - time_millis2) <= TIMEOUT);
+
+    /*if (readResponse())
+      {
+      activity_count++;
+
+      Serial.println("Activity count");
+      Serial.println(activity_count);
+      state = !state;
+      digitalWrite(P6, true);
+      }*/
+
+
+
+    /*unsigned long time_millis2 = millis();
+      while ((millis() - time_millis2) <= TIMEOUT);*/
   }
 }
 
@@ -451,6 +514,9 @@ void toggle_led7()
   static bool state;
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000)
 
   while (digitalRead(ACT7) == LOW);
 
@@ -486,6 +552,8 @@ void toggle_led7()
     if (readResponse())
     {
       activity_count++;
+      /*Serial.println("Activity count");
+        Serial.println(activity_count);*/
       state = !state;
       digitalWrite(P7, true);
     }
@@ -500,6 +568,9 @@ void toggle_led8()
   static bool state;
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000);
 
   while (digitalRead(ACT8) == LOW);
 
@@ -534,6 +605,8 @@ void toggle_led8()
     if (readResponse())
     {
       activity_count++;
+      /*Serial.println("Activity count");
+        Serial.println(activity_count);*/
       state = !state;
       digitalWrite(P8, true);
     }
@@ -548,6 +621,9 @@ void toggle_led9()
   static bool state;
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000);
 
   while (digitalRead(ACT9) == LOW);
 
@@ -582,6 +658,8 @@ void toggle_led9()
     if (readResponse())
     {
       activity_count++;
+      /*Serial.println("Activity count");
+        Serial.println(activity_count);*/
       state = !state;
       digitalWrite(P9, true);
     }
@@ -596,6 +674,9 @@ void toggle_led10()
   static bool state;
 
   //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000);
 
   while (digitalRead(ACT10) == LOW);
 
@@ -631,6 +712,8 @@ void toggle_led10()
     if (readResponse())
     {
       activity_count++;
+      /*Serial.println("Activity count");
+        Serial.println(activity_count);*/
       state = !state;
       digitalWrite(P10, true);
     }
