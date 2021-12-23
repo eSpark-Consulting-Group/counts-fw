@@ -9,6 +9,9 @@ const int P8 = PB7;
 const int P9 = PB8;
 const int P10 = PB9;
 
+const int PBR = PB13;
+const int PBS = PB15;
+
 const int ACT1 = PA0;
 const int ACT2 = PA1;
 const int ACT3 = PA2;
@@ -20,11 +23,10 @@ const int ACT8 = PA7;
 const int ACT9 = PA8;
 const int ACT10 = PA9;
 
-const int TS6 = PA13;
-
 static int activity_count = 0;
 static int round_count = 0;
 static bool turn_off_leds = false;
+String start_check = "RACK";
 
 #define TIMEOUT 5000
 
@@ -57,8 +59,11 @@ void setup() {
   pinMode(ACT8, INPUT_PULLUP);
   pinMode(ACT9, INPUT_PULLUP);
   pinMode(ACT10, INPUT_PULLUP);
+  
+  pinMode(PBR, INPUT_PULLUP);
+  pinMode(PBS, INPUT_PULLUP);
 
-  pinMode(TS6, INPUT_PULLUP);
+  //pinMode(TS6, INPUT_PULLUP);
 
   // Attach interrupts to button input pins
   attachInterrupt(digitalPinToInterrupt(ACT1), toggle_led1, FALLING);
@@ -71,6 +76,8 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ACT8), toggle_led8, FALLING);
   attachInterrupt(digitalPinToInterrupt(ACT9), toggle_led9, FALLING);
   attachInterrupt(digitalPinToInterrupt(ACT10), toggle_led10, FALLING);
+
+  attachInterrupt(digitalPinToInterrupt(PBS), start_func, FALLING);
 
   //attachInterrupt(digitalPinToInterrupt(TS6), change_round, RISING);
 
@@ -107,16 +114,16 @@ void loop() {
       activity_count = 0;
       round_count = 0;
       turn_off_leds = true;
+      start_check = "RACK";
     }
   }
 
-  if (digitalRead(TS6) == LOW)
+  if (digitalRead(PBR) == LOW)
   {
-    while (digitalRead(TS6) == LOW);
-
-    activity_count = 1;
+    while (digitalRead(PBR) == LOW);
+   /* activity_count = 1;
     round_count++;
-    turn_off_leds = true;
+    turn_off_leds = true;*/
     Serial.print("R");
   }
 
@@ -716,12 +723,84 @@ void toggle_led10()
         Serial.println(activity_count);*/
       state = !state;
       digitalWrite(P10, true);
-    }
+    } 
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
   }
 }
+
+
+
+
+
+
+
+
+void start_func()
+{
+  if(start_check == "RACK")
+  {
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000);
+
+  while (digitalRead(PBS) == LOW);
+
+  if (digitalRead(PBS) == HIGH)
+  {
+    Serial.print("PL");
+    
+    unsigned long time_millis = millis();
+    while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+
+    String res = "";
+
+    if (Serial.available())
+    {
+      while (Serial.available())
+      {
+        char c = Serial.read();
+        res += c;
+      }
+    }
+
+    if (res == "PACK")
+    {
+      start_check = "PACK";
+    }
+    
+    else if (res == "RACK")
+    {
+      start_check = "RACK";
+    }
+    
+  }
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*void change_round()
+{
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000);
+  while (digitalRead(PBR) == LOW);
+  
+  if (digitalRead(PBR) == HIGH)
+  {
+    Serial.print("R");
+  }
+}*/
 
 bool readResponse()
 {
@@ -759,8 +838,6 @@ bool readResponse()
     res = "";
     return true;
   }
-
-
 
   return false;
 }
