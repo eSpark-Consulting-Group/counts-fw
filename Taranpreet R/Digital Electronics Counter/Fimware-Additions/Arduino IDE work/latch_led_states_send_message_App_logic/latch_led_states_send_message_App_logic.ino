@@ -77,7 +77,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ACT9), toggle_led9, FALLING);
   attachInterrupt(digitalPinToInterrupt(ACT10), toggle_led10, FALLING);
 
-  attachInterrupt(digitalPinToInterrupt(PBS), start_func, FALLING);
+  //attachInterrupt(digitalPinToInterrupt(PBS), start_ISR, FALLING);
 
   //attachInterrupt(digitalPinToInterrupt(TS6), change_round, RISING);
 
@@ -116,6 +116,46 @@ void loop() {
       turn_off_leds = true;
       start_check = "RACK";
     }
+
+    if (Serial.peek() == 'M ')
+    {
+      Serial.read();
+      activity_count = 0;
+      round_count = 0;
+      turn_off_leds = true;
+      start_check = "RACK";
+    }
+    
+  }
+
+  if (digitalRead(PBS) == LOW)
+  {
+    if(start_check == "RACK")
+    {
+    unsigned long time_millis2 = millis();
+    while ((millis() - time_millis2) <= 1000);
+    while (digitalRead(PBS) == LOW);
+    if (digitalRead(PBS) == HIGH)
+  {
+    Serial.print("PL");
+    
+    unsigned long time_millis = millis();
+    while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+    String res = "";
+    if (Serial.available())
+    {
+      while (Serial.available())
+      {
+        char c = Serial.read();
+        res += c;
+      }
+    }
+    if (res == "PACK")
+    {
+      start_check = "PACK";
+    }
+  }
+  }
   }
 
   if (digitalRead(PBR) == LOW)
@@ -737,15 +777,21 @@ void toggle_led10()
 
 
 
-void start_func()
+void start_ISR()
 {
   if(start_check == "RACK")
   {
 
+  Serial.println("Test");
+  
   unsigned long time_millis2 = millis();
   while ((millis() - time_millis2) <= 1000);
 
+  Serial.println("Test1");
+
   while (digitalRead(PBS) == LOW);
+
+  Serial.println("Test2");
 
   if (digitalRead(PBS) == HIGH)
   {
@@ -770,10 +816,7 @@ void start_func()
       start_check = "PACK";
     }
     
-    else if (res == "RACK")
-    {
-      start_check = "RACK";
-    }
+
     
   }
 }
