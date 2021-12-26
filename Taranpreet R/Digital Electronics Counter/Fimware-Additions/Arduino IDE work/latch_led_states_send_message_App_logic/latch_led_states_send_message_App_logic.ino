@@ -108,16 +108,16 @@ void loop() {
 
   if (Serial.available())
   {
+      
     if (Serial.peek() == 'N')
     {
       Serial.read();
       activity_count = 0;
       round_count = 0;
       turn_off_leds = true;
-      start_check = "RACK";
     }
 
-    if (Serial.peek() == 'M ')
+    if (Serial.peek() == 'M')
     {
       Serial.read();
       activity_count = 0;
@@ -125,7 +125,7 @@ void loop() {
       turn_off_leds = true;
       start_check = "RACK";
     }
-    
+    Serial.read();
   }
 
   if (digitalRead(PBS) == LOW)
