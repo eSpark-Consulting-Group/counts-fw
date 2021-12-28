@@ -23,10 +23,13 @@ const int ACT8 = PA7;
 const int ACT9 = PA8;
 const int ACT10 = PA9;
 
+const int PBST = PA14;
+
 static int activity_count = 0;
 static int round_count = 0;
 static bool turn_off_leds = false;
 String start_check = "RACK";
+String stop_check = "K";
 
 #define TIMEOUT 5000
 
@@ -59,9 +62,10 @@ void setup() {
   pinMode(ACT8, INPUT_PULLUP);
   pinMode(ACT9, INPUT_PULLUP);
   pinMode(ACT10, INPUT_PULLUP);
-  
+
   pinMode(PBR, INPUT_PULLUP);
   pinMode(PBS, INPUT_PULLUP);
+  pinMode(PBST, INPUT_PULLUP);
 
   //pinMode(TS6, INPUT_PULLUP);
 
@@ -82,9 +86,6 @@ void setup() {
   //attachInterrupt(digitalPinToInterrupt(TS6), change_round, RISING);
 
   Serial.begin(9600);
-
-
-
 
 }
 
@@ -108,7 +109,6 @@ void loop() {
 
   if (Serial.available())
   {
-      
     if (Serial.peek() == 'N')
     {
       Serial.read();
@@ -124,46 +124,97 @@ void loop() {
       round_count = 0;
       turn_off_leds = true;
       start_check = "RACK";
+      stop_check = "K";
     }
+
+    if (Serial.peek() == 'S')
+    {
+      Serial.read();
+      stop_check = "S";
+    }
+
+    if (Serial.peek() == 'K')
+    {
+      Serial.read();
+      stop_check = "K";
+    }
+
     Serial.read();
   }
 
+
   if (digitalRead(PBS) == LOW)
   {
-    if(start_check == "RACK")
+    if (start_check == "RACK")
     {
-    unsigned long time_millis2 = millis();
-    while ((millis() - time_millis2) <= 1000);
-    while (digitalRead(PBS) == LOW);
-    if (digitalRead(PBS) == HIGH)
-  {
-    Serial.print("PL");
-    
-    unsigned long time_millis = millis();
-    while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
-    String res = "";
-    if (Serial.available())
-    {
-      while (Serial.available())
+      unsigned long time_millis2 = millis();
+      while ((millis() - time_millis2) <= 1000);
+      while (digitalRead(PBS) == LOW);
+      if (digitalRead(PBS) == HIGH)
       {
-        char c = Serial.read();
-        res += c;
+        Serial.print("PL");
+
+        unsigned long time_millis = millis();
+        while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+        String res = "";
+        if (Serial.available())
+        {
+          while (Serial.available())
+          {
+            char c = Serial.read();
+            res += c;
+          }
+        }
+        if (res == "PACK")
+        {
+          start_check = "PACK";
+        }
       }
     }
-    if (res == "PACK")
+  }
+
+
+
+
+  if (digitalRead(PBST) == LOW)
+  {
+    if (stop_check == "S")
     {
-      start_check = "PACK";
+      unsigned long time_millis2 = millis();
+      while ((millis() - time_millis2) <= 1000);
+      while (digitalRead(PBST) == LOW);
+      if (digitalRead(PBST) == HIGH)
+      {
+        Serial.print("SA");
+
+        unsigned long time_millis = millis();
+        while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+        String res = "";
+        if (Serial.available())
+        {
+          while (Serial.available())
+          {
+            char c = Serial.read();
+            res += c;
+          }
+        }
+        if (res == "K" || res == "M")
+        {
+          stop_check = "K";
+        }
+      }
     }
   }
-  }
-  }
+
+
+
 
   if (digitalRead(PBR) == LOW)
   {
     while (digitalRead(PBR) == LOW);
-   /* activity_count = 1;
-    round_count++;
-    turn_off_leds = true;*/
+    /* activity_count = 1;
+      round_count++;
+      turn_off_leds = true;*/
     Serial.print("R");
   }
 
@@ -199,7 +250,7 @@ void toggle_led1()
   unsigned long time_millis2 = millis();
   while ((millis() - time_millis2) <= 1000)
 
-  while (digitalRead(ACT1) == LOW);
+    while (digitalRead(ACT1) == LOW);
 
   if (digitalRead(ACT1) == HIGH)
   {
@@ -311,7 +362,7 @@ void toggle_led3()
   unsigned long time_millis2 = millis();
   while ((millis() - time_millis2) <= 1000)
 
-  while (digitalRead(ACT3) == LOW);
+    while (digitalRead(ACT3) == LOW);
 
   if (digitalRead(ACT3) == HIGH)
   {
@@ -366,7 +417,7 @@ void toggle_led4()
   unsigned long time_millis2 = millis();
   while ((millis() - time_millis2) <= 1000)
 
-  while (digitalRead(ACT4) == LOW);
+    while (digitalRead(ACT4) == LOW);
 
   if (digitalRead(ACT4) == HIGH)
   {
@@ -421,7 +472,7 @@ void toggle_led5()
   unsigned long time_millis2 = millis();
   while ((millis() - time_millis2) <= 1000)
 
-  while (digitalRead(ACT5) == LOW);
+    while (digitalRead(ACT5) == LOW);
 
   if (digitalRead(ACT5) == HIGH)
   {
@@ -565,7 +616,7 @@ void toggle_led7()
   unsigned long time_millis2 = millis();
   while ((millis() - time_millis2) <= 1000)
 
-  while (digitalRead(ACT7) == LOW);
+    while (digitalRead(ACT7) == LOW);
 
   if (digitalRead(ACT7) == HIGH)
   {
@@ -763,7 +814,7 @@ void toggle_led10()
         Serial.println(activity_count);*/
       state = !state;
       digitalWrite(P10, true);
-    } 
+    }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
@@ -779,47 +830,47 @@ void toggle_led10()
 
 void start_ISR()
 {
-  if(start_check == "RACK")
+  if (start_check == "RACK")
   {
 
-  Serial.println("Test");
-  
-  unsigned long time_millis2 = millis();
-  while ((millis() - time_millis2) <= 1000);
+    Serial.println("Test");
 
-  Serial.println("Test1");
+    unsigned long time_millis2 = millis();
+    while ((millis() - time_millis2) <= 1000);
 
-  while (digitalRead(PBS) == LOW);
+    Serial.println("Test1");
 
-  Serial.println("Test2");
+    while (digitalRead(PBS) == LOW);
 
-  if (digitalRead(PBS) == HIGH)
-  {
-    Serial.print("PL");
-    
-    unsigned long time_millis = millis();
-    while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+    Serial.println("Test2");
 
-    String res = "";
-
-    if (Serial.available())
+    if (digitalRead(PBS) == HIGH)
     {
-      while (Serial.available())
+      Serial.print("PL");
+
+      unsigned long time_millis = millis();
+      while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+
+      String res = "";
+
+      if (Serial.available())
       {
-        char c = Serial.read();
-        res += c;
+        while (Serial.available())
+        {
+          char c = Serial.read();
+          res += c;
+        }
       }
-    }
 
-    if (res == "PACK")
-    {
-      start_check = "PACK";
-    }
-    
+      if (res == "PACK")
+      {
+        start_check = "PACK";
+      }
 
-    
+
+
+    }
   }
-}
 }
 
 
@@ -834,16 +885,16 @@ void start_ISR()
 
 
 /*void change_round()
-{
+  {
   unsigned long time_millis2 = millis();
   while ((millis() - time_millis2) <= 1000);
   while (digitalRead(PBR) == LOW);
-  
+
   if (digitalRead(PBR) == HIGH)
   {
     Serial.print("R");
   }
-}*/
+  }*/
 
 bool readResponse()
 {
