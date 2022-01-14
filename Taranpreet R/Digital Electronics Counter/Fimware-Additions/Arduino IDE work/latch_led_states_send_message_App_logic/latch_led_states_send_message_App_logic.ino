@@ -1,3 +1,5 @@
+#include "STM32LowPower.h"
+
 const int P1 = PB0;
 const int P2 = PB1;
 const int P3 = PB2;
@@ -85,6 +87,10 @@ void setup() {
 
   //attachInterrupt(digitalPinToInterrupt(TS6), change_round, RISING);
 
+  LowPower.begin();
+
+  LowPower.attachInterruptWakeup(PBS, PBS_ISR, RISING, SLEEP_MODE);
+
   Serial.begin(9600);
 
 }
@@ -92,6 +98,7 @@ void setup() {
 
 
 void loop() {
+  Serial.print(".");
   // put your main code here, to run repeatedly:
 
   //activity_count;
@@ -115,6 +122,10 @@ void loop() {
       activity_count = 0;
       round_count = 0;
       turn_off_leds = true;
+      Serial.println();
+      Serial.println("Going to sleep!");
+      LowPower.sleep();
+      Serial.println("This should not print");
     }
 
     if (Serial.peek() == 'M')
@@ -125,6 +136,10 @@ void loop() {
       turn_off_leds = true;
       start_check = "RACK";
       stop_check = "K";
+      Serial.println();
+      Serial.println("Going to sleep111!");
+      LowPower.sleep();
+      Serial.println("This should not print111");
     }
 
     if (Serial.peek() == 'S')
@@ -212,9 +227,9 @@ void loop() {
   if (digitalRead(PBR) == LOW)
   {
     while (digitalRead(PBR) == LOW);
-    /* activity_count = 1;
-      round_count++;
-      turn_off_leds = true;*/
+//     activity_count = 1;
+//      round_count++;
+//      turn_off_leds = true;
     Serial.print("R");
   }
 
@@ -233,6 +248,7 @@ void loop() {
     digitalWrite(P9, LOW);
     digitalWrite(P10, LOW);
   }
+  
 
   //Serial.println(round_count);
 
@@ -934,4 +950,8 @@ bool readResponse()
   }
 
   return false;
+}
+
+void PBS_ISR() {
+  Serial.println("I am awake now!");
 }
