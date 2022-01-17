@@ -27,6 +27,8 @@ const int ACT10 = PA9;
 
 const int PBST = PA14;
 
+const int orange = PC13;
+
 static int activity_count = 0;
 static int round_count = 0;
 static bool turn_off_leds = false;
@@ -52,6 +54,8 @@ void setup() {
   pinMode(P8, OUTPUT);
   pinMode(P9, OUTPUT);
   pinMode(P10, OUTPUT);
+
+  pinMode(orange, OUTPUT);
 
   // Initialize input_pullup pins for buttons press
   pinMode(ACT1, INPUT_PULLUP);
@@ -89,7 +93,7 @@ void setup() {
 
   LowPower.begin();
 
-  LowPower.attachInterruptWakeup(PBS, PBS_ISR, RISING, SLEEP_MODE);
+  LowPower.attachInterruptWakeup(PBS, PBS_ISR, RISING, DEEP_SLEEP_MODE);
 
   Serial.begin(9600);
 
@@ -98,7 +102,23 @@ void setup() {
 
 
 void loop() {
-  Serial.print(".");
+  delay(3000);
+  Serial.println("USMAN");
+//  Serial.print("/");
+//  Serial.print("__nvc nvhnjh");
+  
+  digitalWrite(orange, HIGH);
+  delay(3000);
+  digitalWrite(orange, LOW);
+  Serial.end();
+  LowPower.deepSleep();
+  Serial.begin();
+  
+  digitalWrite(orange, HIGH);
+  delay(500);
+  digitalWrite(orange, LOW);
+
+  
   // put your main code here, to run repeatedly:
 
   //activity_count;
