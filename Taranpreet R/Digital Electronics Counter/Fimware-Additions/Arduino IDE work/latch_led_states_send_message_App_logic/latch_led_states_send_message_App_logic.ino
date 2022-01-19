@@ -32,8 +32,9 @@ const int orange = PC13;
 static int activity_count = 0;
 static int round_count = 0;
 static bool turn_off_leds = false;
-String start_check = "RACK";
+String start_check = "M"; // Enable
 String stop_check = "K";
+bool bluetooth_flag = 0;
 
 #define TIMEOUT 5000
 
@@ -87,13 +88,13 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ACT9), toggle_led9, FALLING);
   attachInterrupt(digitalPinToInterrupt(ACT10), toggle_led10, FALLING);
 
-  //attachInterrupt(digitalPinToInterrupt(PBS), start_ISR, FALLING);
+  attachInterrupt(digitalPinToInterrupt(PBS), start_ISR, FALLING);
 
   //attachInterrupt(digitalPinToInterrupt(TS6), change_round, RISING);
 
   LowPower.begin();
 
-  LowPower.attachInterruptWakeup(PBS, PBS_ISR, RISING, DEEP_SLEEP_MODE);
+  LowPower.attachInterruptWakeup(PBS, wakeup_ISR, FALLING, DEEP_SLEEP_MODE);
 
   Serial.begin(9600);
 
@@ -102,21 +103,22 @@ void setup() {
 
 
 void loop() {
-  delay(3000);
-  Serial.println("USMAN");
+// Serial.println("USMAN");
+//  delay(3000);
+//  Serial.println("USMAN");
 //  Serial.print("/");
 //  Serial.print("__nvc nvhnjh");
-  
-  digitalWrite(orange, HIGH);
-  delay(3000);
-  digitalWrite(orange, LOW);
-  Serial.end();
-  LowPower.deepSleep();
-  Serial.begin();
-  
-  digitalWrite(orange, HIGH);
-  delay(500);
-  digitalWrite(orange, LOW);
+//  
+//  digitalWrite(orange, HIGH);
+//  delay(3000);
+//  digitalWrite(orange, LOW);
+//  Serial.end();
+//  LowPower.deepSleep();
+//  Serial.begin();
+//  
+//  digitalWrite(orange, HIGH);
+//  delay(500);
+//  digitalWrite(orange, LOW);
 
   
   // put your main code here, to run repeatedly:
@@ -136,36 +138,38 @@ void loop() {
 
   if (Serial.available())
   {
-    if (Serial.peek() == 'N')
+    if (Serial.peek() == 'N') 
     {
       Serial.read();
       activity_count = 0;
       round_count = 0;
       turn_off_leds = true;
-      Serial.println();
       Serial.println("Going to sleep!");
+      
       LowPower.sleep();
       Serial.println("This should not print");
     }
 
-    if (Serial.peek() == 'M')
+    if (Serial.peek() == 'M') // Enable Play button when M is received from App
     {
       Serial.read();
       activity_count = 0;
       round_count = 0;
       turn_off_leds = true;
-      start_check = "RACK";
+      start_check = "M";
       stop_check = "K";
-      Serial.println();
-      Serial.println("Going to sleep111!");
-      LowPower.sleep();
-      Serial.println("This should not print111");
+//      Serial.println();
+//      Serial.println("Going to sleep111!");
+//      LowPower.sleep();
+//      Serial.println("This should not print111");
     }
 
     if (Serial.peek() == 'S')
     {
       Serial.read();
       stop_check = "S";
+      Serial.println();
+      
     }
 
     if (Serial.peek() == 'K')
@@ -174,13 +178,30 @@ void loop() {
       stop_check = "K";
     }
 
+    if (Serial.peek() == 'B')
+    {
+      Serial.read();
+      bluetooth_flag = 1;
+      Serial.println("bluetooth_flag = 1");
+    }
+
+    if (Serial.peek() == 'X')
+    {
+      Serial.read();
+      delay(10);
+      Serial.println("Sleeping, Program completed");
+      Serial.end();
+      LowPower.deepSleep();
+    }
+    
+
     Serial.read();
   }
 
 
   if (digitalRead(PBS) == LOW)
   {
-    if (start_check == "RACK")
+    if (start_check == "M") 
     {
       unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= 1000);
@@ -195,7 +216,7 @@ void loop() {
         if (Serial.available())
         {
           while (Serial.available())
-          {
+          { 
             char c = Serial.read();
             res += c;
           }
@@ -203,6 +224,13 @@ void loop() {
         if (res == "PACK")
         {
           start_check = "PACK";
+          if(bluetooth_flag)
+          {
+            bluetooth_flag = 0;
+            Serial.println("Sleeping, Bluetooth connected");
+            Serial.end();
+            LowPower.deepSleep();
+          }
         }
       }
     }
@@ -866,7 +894,7 @@ void toggle_led10()
 
 void start_ISR()
 {
-  if (start_check == "RACK")
+  if (start_check == "M")
   {
 
     Serial.println("Test");
@@ -898,7 +926,7 @@ void start_ISR()
         }
       }
 
-      if (res == "PACK")
+      if (res == "PACK") // Disable Play button When PACK is received
       {
         start_check = "PACK";
       }
@@ -972,6 +1000,7 @@ bool readResponse()
   return false;
 }
 
-void PBS_ISR() {
-  Serial.println("I am awake now!");
+void wakeup_ISR() {
+  Serial.begin(9600);
+  Serial.println("I am awake now and have enabled serial!");
 }
