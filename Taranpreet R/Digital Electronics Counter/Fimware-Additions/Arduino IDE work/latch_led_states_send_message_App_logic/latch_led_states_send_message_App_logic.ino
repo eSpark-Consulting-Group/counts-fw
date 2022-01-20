@@ -144,10 +144,6 @@ void loop() {
       activity_count = 0;
       round_count = 0;
       turn_off_leds = true;
-      Serial.println("Going to sleep!");
-      
-      LowPower.sleep();
-      Serial.println("This should not print");
     }
 
     if (Serial.peek() == 'M') // Enable Play button when M is received from App
@@ -158,10 +154,6 @@ void loop() {
       turn_off_leds = true;
       start_check = "M";
       stop_check = "K";
-//      Serial.println();
-//      Serial.println("Going to sleep111!");
-//      LowPower.sleep();
-//      Serial.println("This should not print111");
     }
 
     if (Serial.peek() == 'S')
@@ -184,6 +176,13 @@ void loop() {
       bluetooth_flag = 1;
       Serial.println("bluetooth_flag = 1");
     }
+
+    if (Serial.peek() == 'Z')
+    {
+      Serial.read();
+      bluetooth_flag = 0;
+      Serial.println("bluetooth_flag = 0");
+    } 
 
     if (Serial.peek() == 'X')
     {
