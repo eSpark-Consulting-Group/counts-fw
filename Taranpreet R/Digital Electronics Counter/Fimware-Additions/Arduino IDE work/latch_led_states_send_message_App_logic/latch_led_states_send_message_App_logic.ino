@@ -29,12 +29,13 @@ const int PBST = PA14;
 
 const int orange = PC13;
 
+static int activity_count = 0;
 static int tens_count = 0;
 static bool turn_off_leds = false;
 char start_check = 'M'; // Enable
 char stop_check = 'K';
 bool bluetooth_flag = 0;
-char tens_count_charcaters [] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+const char tens_count_charcaters [] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 #define TIMEOUT 5000
 
@@ -117,7 +118,7 @@ void loop() {
     if (Serial.peek() == 'M') // Enable Play button when M is received from App
     {
       Serial.read();
-      tens_count = 0;
+      activity_count = 0;
       tens_count = 0;
       turn_off_leds = true;
       start_check = 'M';
@@ -312,7 +313,7 @@ void loop() {
 void toggle_led1()
 {
   static bool state = false;
-  char activity[] = {};
+  char activity[] = {0};
 
   //for (unsigned long i = 0; i <= LOOP_RUN; i++);
 
@@ -324,19 +325,19 @@ void toggle_led1()
   if (digitalRead(ACT1) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
 
-    if (tens_count < 1)
+    if (tens_count == 0)
     {
       Serial.print("1");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "1");
       Serial.print(activity);
     }
@@ -346,8 +347,7 @@ void toggle_led1()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P1, true);
     }
 
@@ -360,7 +360,7 @@ void toggle_led1()
 void toggle_led2()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
 
   //for (int i = 0; i <= LOOP_RUN; i++);
@@ -373,9 +373,9 @@ void toggle_led2()
   if (digitalRead(ACT2) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
@@ -385,7 +385,7 @@ void toggle_led2()
       Serial.print("2");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "2");
       Serial.print(activity);
     }
@@ -395,8 +395,7 @@ void toggle_led2()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P2, true);
     }
 
@@ -410,7 +409,7 @@ void toggle_led2()
 void toggle_led3()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
 
   //for (int i = 0; i <= LOOP_RUN; i++);
@@ -423,9 +422,9 @@ void toggle_led3()
   if (digitalRead(ACT3) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
@@ -435,7 +434,7 @@ void toggle_led3()
       Serial.print("3");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "3");
       Serial.print(activity);
     }
@@ -445,9 +444,8 @@ void toggle_led3()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
-      digitalWrite(P2, true);
+      activity_count++;
+      digitalWrite(P3, true);
     }
 
     /*unsigned long time_millis2 = millis();
@@ -459,7 +457,7 @@ void toggle_led3()
 void toggle_led4()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
 
   //for (int i = 0; i <= LOOP_RUN; i++);
@@ -472,9 +470,9 @@ void toggle_led4()
   if (digitalRead(ACT4) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
@@ -484,7 +482,7 @@ void toggle_led4()
       Serial.print("4");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "4");
       Serial.print(activity);
     }
@@ -494,8 +492,7 @@ void toggle_led4()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P4, true);
     }
 
@@ -508,7 +505,7 @@ void toggle_led4()
 void toggle_led5()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -520,19 +517,19 @@ void toggle_led5()
   if (digitalRead(ACT5) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
 
     if (tens_count < 1)
     {
-      Serial.print("4");
+      Serial.print("5");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "5");
       Serial.print(activity);
     }
@@ -542,8 +539,7 @@ void toggle_led5()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P5, true);
     }
 
@@ -556,7 +552,7 @@ void toggle_led5()
 void toggle_led6()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -568,9 +564,9 @@ void toggle_led6()
   if (digitalRead(ACT6) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
@@ -580,7 +576,7 @@ void toggle_led6()
       Serial.print("6");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "6");
       Serial.print(activity);
     }
@@ -590,8 +586,7 @@ void toggle_led6()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P6, true);
     }
 
@@ -604,7 +599,7 @@ void toggle_led6()
 void toggle_led7()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -616,9 +611,9 @@ void toggle_led7()
   if (digitalRead(ACT7) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
@@ -628,7 +623,7 @@ void toggle_led7()
       Serial.print("7");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "7");
       Serial.print(activity);
     }
@@ -638,8 +633,7 @@ void toggle_led7()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P7, true);
     }
 
@@ -653,7 +647,7 @@ void toggle_led7()
 void toggle_led8()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -665,9 +659,9 @@ void toggle_led8()
   if (digitalRead(ACT8) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
@@ -677,7 +671,7 @@ void toggle_led8()
       Serial.print("8");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "8");
       Serial.print(activity);
     }
@@ -687,8 +681,7 @@ void toggle_led8()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P8, true);
     }
 
@@ -703,7 +696,7 @@ void toggle_led8()
 void toggle_led9()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -715,9 +708,9 @@ void toggle_led9()
   if (digitalRead(ACT9) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
@@ -727,7 +720,7 @@ void toggle_led9()
       Serial.print("9");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count], 1);
       strcat(activity, "9");
       Serial.print(activity);
     }
@@ -737,8 +730,7 @@ void toggle_led9()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P9, true);
     }
 
@@ -751,7 +743,7 @@ void toggle_led9()
 void toggle_led10()
 {
   static bool state;
-  char activity[] = {};
+  char activity[] = {0};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -765,9 +757,9 @@ void toggle_led10()
   if (digitalRead(ACT10) == HIGH)
   {
 
-    if (tens_count >= 10)
+    if (activity_count >= 10)
     {
-      tens_count = 0;
+      activity_count = 0;
       tens_count++;
       //turn_off_leds = true;
     }
@@ -777,7 +769,7 @@ void toggle_led10()
       Serial.print("10");
     } else if (tens_count >= 1)
     {
-      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strncat(activity, &tens_count_charcaters[tens_count + 1], 1);;
       strcat(activity, "0");
       Serial.print(activity);
     }
@@ -787,8 +779,7 @@ void toggle_led10()
 
     if (readResponse())
     {
-      tens_count++;
-      state = !state;
+      activity_count++;
       digitalWrite(P10, true);
     }
 
