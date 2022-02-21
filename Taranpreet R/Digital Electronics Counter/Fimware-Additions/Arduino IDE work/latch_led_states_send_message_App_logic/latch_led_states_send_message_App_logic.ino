@@ -29,12 +29,12 @@ const int PBST = PA14;
 
 const int orange = PC13;
 
-static int activity_count = 0;
-static int round_count = 0;
+static int tens_count = 0;
 static bool turn_off_leds = false;
-String start_check = "M"; // Enable
-String stop_check = "K";
+char start_check = 'M'; // Enable
+char stop_check = 'K';
 bool bluetooth_flag = 0;
+char tens_count_charcaters [] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 #define TIMEOUT 5000
 
@@ -77,16 +77,16 @@ void setup() {
   //pinMode(TS6, INPUT_PULLUP);
 
   // Attach interrupts to button input pins
-  attachInterrupt(digitalPinToInterrupt(ACT1), toggle_led1, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT2), toggle_led2, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT3), toggle_led3, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT4), toggle_led4, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT5), toggle_led5, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT6), toggle_led6, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT7), toggle_led7, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT8), toggle_led8, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT9), toggle_led9, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ACT10), toggle_led10, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT1), toggle_led1, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT2), toggle_led2, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT3), toggle_led3, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT4), toggle_led4, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT5), toggle_led5, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT6), toggle_led6, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT7), toggle_led7, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT8), toggle_led8, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT9), toggle_led9, FALLING);
+  // attachInterrupt(digitalPinToInterrupt(ACT10), toggle_led10, FALLING);
 
   attachInterrupt(digitalPinToInterrupt(PBS), start_ISR, FALLING);
 
@@ -103,96 +103,64 @@ void setup() {
 
 
 void loop() {
-// Serial.println("USMAN");
-//  delay(3000);
-//  Serial.println("USMAN");
-//  Serial.print("/");
-//  Serial.print("__nvc nvhnjh");
-//  
-//  digitalWrite(orange, HIGH);
-//  delay(3000);
-//  digitalWrite(orange, LOW);
-//  Serial.end();
-//  LowPower.deepSleep();
-//  Serial.begin();
-//  
-//  digitalWrite(orange, HIGH);
-//  delay(500);
-//  digitalWrite(orange, LOW);
-
-  
-  // put your main code here, to run repeatedly:
-
-  //activity_count;
-  //round_count;
-  /*static bool state = false;
-
-    if(readResponse())
-    {
-    state = !state;
-    digitalWrite(P3, state);
-    }*/
-
-  //Serial.println(round_count);
-  /*Serial.println(round_count);*/
 
   if (Serial.available())
   {
-    if (Serial.peek() == 'N') 
+    if (Serial.peek() == 'N')
     {
       Serial.read();
-      activity_count = 0;
-      round_count = 0;
+      tens_count = 0;
+      tens_count = 0;
       turn_off_leds = true;
     }
 
     if (Serial.peek() == 'M') // Enable Play button when M is received from App
     {
       Serial.read();
-      activity_count = 0;
-      round_count = 0;
+      tens_count = 0;
+      tens_count = 0;
       turn_off_leds = true;
-      start_check = "M";
-      stop_check = "K";
+      start_check = 'M';
+      stop_check = 'K';
     }
 
     if (Serial.peek() == 'S')
     {
       Serial.read();
-      stop_check = "S";
+      stop_check = 'S';
       Serial.println();
-      
+
     }
 
     if (Serial.peek() == 'K')
     {
       Serial.read();
-      stop_check = "K";
+      stop_check = 'K';
     }
 
     if (Serial.peek() == 'B')
     {
       Serial.read();
       bluetooth_flag = 1;
-      Serial.println("bluetooth_flag = 1");
+      //Serial.println("bluetooth_flag = 1");
     }
 
     if (Serial.peek() == 'Z')
     {
       Serial.read();
       bluetooth_flag = 0;
-      Serial.println("bluetooth_flag = 0");
-    } 
+      //Serial.println("bluetooth_flag = 0");
+    }
 
     if (Serial.peek() == 'X')
     {
       Serial.read();
       delay(10);
-      Serial.println("Sleeping, Program completed");
+      //Serial.println("Sleeping, Program completed");
       Serial.end();
       LowPower.deepSleep();
     }
-    
+
 
     Serial.read();
   }
@@ -200,7 +168,7 @@ void loop() {
 
   if (digitalRead(PBS) == LOW)
   {
-    if (start_check == "M") 
+    if (start_check == 'M')
     {
       unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= 1000);
@@ -211,22 +179,29 @@ void loop() {
 
         unsigned long time_millis = millis();
         while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
-        String res = "";
+
+        char buffer[] = {};
+
         if (Serial.available())
         {
-          while (Serial.available())
-          { 
-            char c = Serial.read();
-            res += c;
-          }
+
+          Serial.readBytes(buffer, 4);
         }
-        if (res == "PACK")
+
+        // Flush all bytes
+        while (Serial.available() > 0)
         {
-          start_check = "PACK";
-          if(bluetooth_flag)
+          Serial.read();
+        }
+
+        if (strncmp(buffer, "PACK", 4) == 0)
+        {
+
+          start_check = 'P';
+          if (bluetooth_flag)
           {
             bluetooth_flag = 0;
-            Serial.println("Sleeping, Bluetooth connected");
+            //Serial.println("Sleeping, Bluetooth connected");
             Serial.end();
             LowPower.deepSleep();
           }
@@ -240,7 +215,7 @@ void loop() {
 
   if (digitalRead(PBST) == LOW)
   {
-    if (stop_check == "S")
+    if (stop_check == 'S')
     {
       unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= 1000);
@@ -251,18 +226,23 @@ void loop() {
 
         unsigned long time_millis = millis();
         while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
-        String res = "";
+
+        char buffer;
+
         if (Serial.available())
         {
-          while (Serial.available())
-          {
-            char c = Serial.read();
-            res += c;
-          }
+          buffer = Serial.read();
         }
-        if (res == "K" || res == "M")
+
+        // Flush all bytes
+        while (Serial.available())
         {
-          stop_check = "K";
+          Serial.read();
+        }
+
+        if (buffer == 'K' || buffer == 'M')
+        {
+          stop_check = 'K';
         }
       }
     }
@@ -274,9 +254,9 @@ void loop() {
   if (digitalRead(PBR) == LOW)
   {
     while (digitalRead(PBR) == LOW);
-//     activity_count = 1;
-//      round_count++;
-//      turn_off_leds = true;
+    //     tens_count = 1;
+    //      tens_count++;
+    //      turn_off_leds = true;
     Serial.print("R");
   }
 
@@ -295,50 +275,70 @@ void loop() {
     digitalWrite(P9, LOW);
     digitalWrite(P10, LOW);
   }
-  
 
-  //Serial.println(round_count);
-
-  /*Serial.println("Activity: ");
-    Serial.println(activity_count);*/
-
+  if (digitalRead(ACT1) == LOW)
+  {
+    toggle_led1();
+  } else if (digitalRead(ACT2) == LOW)
+  {
+    toggle_led2();
+  } else if (digitalRead(ACT3) == LOW)
+  {
+    toggle_led3();
+  } else if (digitalRead(ACT4) == LOW)
+  {
+    toggle_led4();
+  } else if (digitalRead(ACT5) == LOW)
+  {
+    toggle_led5();
+  } else if (digitalRead(ACT6) == LOW)
+  {
+    toggle_led6();
+  } else if (digitalRead(ACT7) == LOW)
+  {
+    toggle_led7();
+  } else if (digitalRead(ACT8) == LOW)
+  {
+    toggle_led8();
+  } else if (digitalRead(ACT9) == LOW)
+  {
+    toggle_led9();
+  } else if (digitalRead(ACT10) == LOW)
+  {
+    toggle_led10();
+  }
 }
 
 void toggle_led1()
 {
   static bool state = false;
+  char activity[] = {};
 
   //for (unsigned long i = 0; i <= LOOP_RUN; i++);
 
   unsigned long time_millis2 = millis();
-  while ((millis() - time_millis2) <= 1000)
+  while ((millis() - time_millis2) <= 1000);
 
-    while (digitalRead(ACT1) == LOW);
+  while (digitalRead(ACT1) == LOW);
 
   if (digitalRead(ACT1) == HIGH)
   {
 
-    if (activity_count >= 10)
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
       //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
       Serial.print("1");
-    } else if (round_count >= 1)
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count) + "1");
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "1");
+      Serial.print(activity);
     }
 
     unsigned long time_millis = millis();
@@ -346,10 +346,7 @@ void toggle_led1()
 
     if (readResponse())
     {
-      activity_count++;
-
-      /*Serial.println("Activity count");
-        Serial.println(activity_count);*/
+      tens_count++;
       state = !state;
       digitalWrite(P1, true);
     }
@@ -363,6 +360,8 @@ void toggle_led1()
 void toggle_led2()
 {
   static bool state;
+  char activity[] = {};
+
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -373,27 +372,22 @@ void toggle_led2()
 
   if (digitalRead(ACT2) == HIGH)
   {
-    if (activity_count >= 10)
+
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
       //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
       Serial.print("2");
-    } else if (round_count >= 1)
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count) + "2");
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "2");
+      Serial.print(activity);
     }
 
     unsigned long time_millis = millis();
@@ -401,17 +395,14 @@ void toggle_led2()
 
     if (readResponse())
     {
-      activity_count++;
-
-      /*Serial.println("Activity count");
-        Serial.println(activity_count);*/
-
+      tens_count++;
       state = !state;
       digitalWrite(P2, true);
     }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
+
   }
 }
 
@@ -419,37 +410,34 @@ void toggle_led2()
 void toggle_led3()
 {
   static bool state;
+  char activity[] = {};
+
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
   unsigned long time_millis2 = millis();
-  while ((millis() - time_millis2) <= 1000)
+  while ((millis() - time_millis2) <= 1000);
 
-    while (digitalRead(ACT3) == LOW);
+  while (digitalRead(ACT3) == LOW);
 
   if (digitalRead(ACT3) == HIGH)
   {
-    if (activity_count >= 10)
+
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
       //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
       Serial.print("3");
-    } else if (round_count >= 1)
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count) + "3");
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "3");
+      Serial.print(activity);
     }
 
     unsigned long time_millis = millis();
@@ -457,54 +445,48 @@ void toggle_led3()
 
     if (readResponse())
     {
-      activity_count++;
-
-      /*Serial.println("Activity count");
-        Serial.println(activity_count);*/
-
+      tens_count++;
       state = !state;
-      digitalWrite(P3, true);
+      digitalWrite(P2, true);
     }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
+
   }
 }
 
 void toggle_led4()
 {
   static bool state;
+  char activity[] = {};
+
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
   unsigned long time_millis2 = millis();
-  while ((millis() - time_millis2) <= 1000)
+  while ((millis() - time_millis2) <= 1000);
 
-    while (digitalRead(ACT4) == LOW);
+  while (digitalRead(ACT4) == LOW);
 
   if (digitalRead(ACT4) == HIGH)
   {
-    if (activity_count >= 10)
+
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
       //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
       Serial.print("4");
-    } else if (round_count >= 1)
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count) + "4");
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "4");
+      Serial.print(activity);
     }
 
     unsigned long time_millis = millis();
@@ -512,89 +494,69 @@ void toggle_led4()
 
     if (readResponse())
     {
-      activity_count++;
-      /*Serial.println("Activity count");
-        Serial.println(activity_count);*/
-
+      tens_count++;
       state = !state;
       digitalWrite(P4, true);
     }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
+
   }
 }
 
 void toggle_led5()
 {
   static bool state;
-  String res = "";
+  char activity[] = {};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
   unsigned long time_millis2 = millis();
-  while ((millis() - time_millis2) <= 1000)
+  while ((millis() - time_millis2) <= 1000);
 
-    while (digitalRead(ACT5) == LOW);
+  while (digitalRead(ACT5) == LOW);
 
   if (digitalRead(ACT5) == HIGH)
   {
-    if (activity_count >= 10)
+
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
       //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
-      Serial.print("5");
-    } else if (round_count >= 1)
+      Serial.print("4");
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count) + "5");
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "5");
+      Serial.print(activity);
     }
 
     unsigned long time_millis = millis();
     while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
 
-    if (Serial.available())
+    if (readResponse())
     {
-      while (Serial.available())
-      {
-        char c = Serial.read();
-        res += c;
-      }
-
-      if ((res == "ACK"))
-      {
-        res = "";
-        activity_count++;
-        /*Serial.println("Activity count");
-          Serial.println(activity_count);*/
-
-        state = !state;
-        digitalWrite(P5, true);
-      }
-
+      tens_count++;
+      state = !state;
+      digitalWrite(P5, true);
     }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
+
   }
 }
 
 void toggle_led6()
 {
   static bool state;
-  String res = "";
+  char activity[] = {};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -605,106 +567,22 @@ void toggle_led6()
 
   if (digitalRead(ACT6) == HIGH)
   {
-    if (activity_count >= 10)
+
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
       //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
       Serial.print("6");
-    } else if (round_count >= 1)
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count) + "6");
-    }
-
-    unsigned long time_millis = millis();
-    while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
-
-    if (Serial.available())
-    {
-      while (Serial.available())
-      {
-        char c = Serial.read();
-        res += c;
-      }
-
-      if ((res == "ACK"))
-      {
-        res = "";
-        activity_count++;
-        /*Serial.println("Activity count");
-          Serial.println(activity_count);*/
-
-        state = !state;
-        digitalWrite(P6, true);
-      }
-
-    }
-
-
-    /*if (readResponse())
-      {
-      activity_count++;
-
-      Serial.println("Activity count");
-      Serial.println(activity_count);
-      state = !state;
-      digitalWrite(P6, true);
-      }*/
-
-
-
-    /*unsigned long time_millis2 = millis();
-      while ((millis() - time_millis2) <= TIMEOUT);*/
-  }
-}
-
-void toggle_led7()
-{
-  static bool state;
-
-  //for (int i = 0; i <= LOOP_RUN; i++);
-
-  unsigned long time_millis2 = millis();
-  while ((millis() - time_millis2) <= 1000)
-
-    while (digitalRead(ACT7) == LOW);
-
-  if (digitalRead(ACT7) == HIGH)
-  {
-
-    if (activity_count >= 10)
-    {
-      activity_count = 0;
-      round_count++;
-      //turn_off_leds = true;
-    }
-
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
-    {
-      Serial.print("7");
-    } else if (round_count >= 1)
-    {
-      Serial.print(String(round_count) + "7");
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "6");
+      Serial.print(activity);
     }
 
     unsigned long time_millis = millis();
@@ -712,21 +590,70 @@ void toggle_led7()
 
     if (readResponse())
     {
-      activity_count++;
-      /*Serial.println("Activity count");
-        Serial.println(activity_count);*/
+      tens_count++;
+      state = !state;
+      digitalWrite(P6, true);
+    }
+
+    /*unsigned long time_millis2 = millis();
+      while ((millis() - time_millis2) <= TIMEOUT);*/
+
+  }
+}
+
+void toggle_led7()
+{
+  static bool state;
+  char activity[] = {};
+
+  //for (int i = 0; i <= LOOP_RUN; i++);
+
+  unsigned long time_millis2 = millis();
+  while ((millis() - time_millis2) <= 1000);
+
+  while (digitalRead(ACT7) == LOW);
+
+  if (digitalRead(ACT7) == HIGH)
+  {
+
+    if (tens_count >= 10)
+    {
+      tens_count = 0;
+      tens_count++;
+      //turn_off_leds = true;
+    }
+
+    if (tens_count < 1)
+    {
+      Serial.print("7");
+    } else if (tens_count >= 1)
+    {
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "7");
+      Serial.print(activity);
+    }
+
+    unsigned long time_millis = millis();
+    while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+
+    if (readResponse())
+    {
+      tens_count++;
       state = !state;
       digitalWrite(P7, true);
     }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
+
   }
+
 }
 
 void toggle_led8()
 {
   static bool state;
+  char activity[] = {};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -737,27 +664,22 @@ void toggle_led8()
 
   if (digitalRead(ACT8) == HIGH)
   {
-    if (activity_count >= 10)
+
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
       //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
       Serial.print("8");
-    } else if (round_count >= 1)
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count) + "8");
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "8");
+      Serial.print(activity);
     }
 
     unsigned long time_millis = millis();
@@ -765,21 +687,23 @@ void toggle_led8()
 
     if (readResponse())
     {
-      activity_count++;
-      /*Serial.println("Activity count");
-        Serial.println(activity_count);*/
+      tens_count++;
       state = !state;
       digitalWrite(P8, true);
     }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
+
   }
+
+
 }
 
 void toggle_led9()
 {
   static bool state;
+  char activity[] = {};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -790,49 +714,44 @@ void toggle_led9()
 
   if (digitalRead(ACT9) == HIGH)
   {
-    if (activity_count >= 10)
+
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
       //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
       Serial.print("9");
-    } else if (round_count >= 1)
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count) + "9");
-    };
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "9");
+      Serial.print(activity);
+    }
 
     unsigned long time_millis = millis();
     while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
 
     if (readResponse())
     {
-      activity_count++;
-      /*Serial.println("Activity count");
-        Serial.println(activity_count);*/
+      tens_count++;
       state = !state;
       digitalWrite(P9, true);
     }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
+
   }
 }
 
 void toggle_led10()
 {
   static bool state;
+  char activity[] = {};
 
   //for (int i = 0; i <= LOOP_RUN; i++);
 
@@ -845,26 +764,22 @@ void toggle_led10()
 
   if (digitalRead(ACT10) == HIGH)
   {
-    if (activity_count > 10)
+
+    if (tens_count >= 10)
     {
-      activity_count = 0;
-      round_count++;
+      tens_count = 0;
+      tens_count++;
+      //turn_off_leds = true;
     }
 
-    /*if (activity_count == 0)
-      state = false;*/
-
-    /*while (Serial.available())
-      {
-      Serial.read();
-      }*/
-
-    if (round_count < 1)
+    if (tens_count < 1)
     {
       Serial.print("10");
-    } else if (round_count >= 1)
+    } else if (tens_count >= 1)
     {
-      Serial.print(String(round_count + 1) + "0");
+      strcat(activity, (const char*)tens_count_charcaters[tens_count]);
+      strcat(activity, "0");
+      Serial.print(activity);
     }
 
     unsigned long time_millis = millis();
@@ -872,28 +787,22 @@ void toggle_led10()
 
     if (readResponse())
     {
-      activity_count++;
-      /*Serial.println("Activity count");
-        Serial.println(activity_count);*/
+      tens_count++;
       state = !state;
       digitalWrite(P10, true);
     }
 
     /*unsigned long time_millis2 = millis();
       while ((millis() - time_millis2) <= TIMEOUT);*/
+
   }
 }
 
 
 
-
-
-
-
-
 void start_ISR()
 {
-  if (start_check == "M")
+  if (start_check == 'M')
   {
 
     Serial.println("Test");
@@ -914,23 +823,24 @@ void start_ISR()
       unsigned long time_millis = millis();
       while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
 
-      String res = "";
+      char buffer[] = {};
 
       if (Serial.available())
       {
-        while (Serial.available())
-        {
-          char c = Serial.read();
-          res += c;
-        }
+
+        Serial.readBytes(buffer, 4);
       }
 
-      if (res == "PACK") // Disable Play button When PACK is received
+      // Flush bytes
+      while (Serial.available() > 0)
       {
-        start_check = "PACK";
+        Serial.read();
       }
 
-
+      if (strncmp(buffer, "PACK", 4) == 0)
+      {
+        start_check = 'P';
+      }
 
     }
   }
@@ -938,65 +848,24 @@ void start_ISR()
 
 
 
-
-
-
-
-
-
-
-
-
-/*void change_round()
-  {
-  unsigned long time_millis2 = millis();
-  while ((millis() - time_millis2) <= 1000);
-  while (digitalRead(PBR) == LOW);
-
-  if (digitalRead(PBR) == HIGH)
-  {
-    Serial.print("R");
-  }
-  }*/
-
 bool readResponse()
 {
-  String res = "";
-
-
-  /*while (Serial.available())
-    {
-    char c = Serial.read();
-    res += c;
-    }*/
+  char buffer[] = {0};
+  bool status = false;
 
   if (Serial.available())
   {
-    while (Serial.available())
-    {
-      char c = Serial.read();
-      res += c;
-      //Serial.print(c);
-    }
+    Serial.readBytes(buffer, 3);
   }
 
-  /*if ((res == "ACK") and (res.length() == 3))
-    {
-    res = "";
-    //activity_count++;
-    return true;
-    } else if (res.length() > 3)
-    {
-    res = "";
-    }*/
-
-  if ((res == "ACK"))
+  if (strncmp((const char* )buffer, "ACK", 3) == 0)
   {
-    res = "";
-    return true;
+    status = true;
+  } else {
+    status = false;
   }
 
-  return false;
+  return status;
 }
 
 void wakeup_ISR() {
