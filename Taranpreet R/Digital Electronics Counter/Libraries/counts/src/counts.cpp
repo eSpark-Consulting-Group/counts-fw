@@ -72,10 +72,18 @@ extern "C"
 	    if (Serial.peek() == 'N')
 	    {
 	      Serial.read();
-	      tens_count = 0;
+	      activity_count = 0;
 	      tens_count = 0;
 	      turn_off_leds = true;
 	      state = SUCCESS;
+
+	      // Turn off all LEDs
+	      uint32_t leds[] = {P1, P2, P3, P4, P5, P6, P7, P8, P9, P10};
+
+	      for(int i = 0; i < 10; i++)
+	      {
+	      	digitalWrite(leds[i], LOW);
+	      }
 	    }
 
 		return SUCCESS;
@@ -176,7 +184,18 @@ extern "C"
 	      Serial.read();
 	      delay(10);
 	      //Serial.println("Sleeping, Program completed");
+
+	      // Turn off all LEDs
+  	      uint32_t leds[] = {P1, P2, P3, P4, P5, P6, P7, P8, P9, P10};
+
+	      for(int i = 0; i < 10; i++)
+	      {
+	      	digitalWrite(leds[i], LOW);
+	      }
+
 	      Serial.end();
+
+	      // Go to Sleep
 	      LowPower.deepSleep();
 	      state = SUCCESS;
 	    }
@@ -192,46 +211,49 @@ extern "C"
 
 	uint8_t check_start_button()
 	{
-	    if (start_check == 'M')
-	    {
-	      unsigned long time_millis2 = millis();
-	      while ((millis() - time_millis2) <= 1000);
-	      while (digitalRead(PBS) == LOW);
-	      if (digitalRead(PBS) == HIGH)
-	      {
-	        Serial.print("PL");
+		if(digitalRead(PBS) == LOW)
+		{
+		    if (start_check == 'M')
+		    {
+		      unsigned long time_millis2 = millis();
+		      while ((millis() - time_millis2) <= 1000);
+		      while (digitalRead(PBS) == LOW);
+		      if (digitalRead(PBS) == HIGH)
+		      {
+		        Serial.print("PL");
 
-	        unsigned long time_millis = millis();
-	        while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+		        unsigned long time_millis = millis();
+		        while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
 
-	        char buffer[] = {};
+		        char buffer[] = {};
 
-	        if (Serial.available())
-	        {
+		        if (Serial.available())
+		        {
 
-	          Serial.readBytes(buffer, 4);
-	        }
+		          Serial.readBytes(buffer, 4);
+		        }
 
-	        // Flush all bytes
-	        while (Serial.available() > 0)
-	        {
-	          Serial.read();
-	        }
+		        // Flush all bytes
+		        while (Serial.available() > 0)
+		        {
+		          Serial.read();
+		        }
 
-	        if (strncmp(buffer, "PACK", 4) == 0)
-	        {
+		        if (strncmp(buffer, "PACK", 4) == 0)
+		        {
 
-	          start_check = 'P';
-	          if (bluetooth_flag)
-	          {
-	            bluetooth_flag = 0;
-	            //Serial.println("Sleeping, Bluetooth connected");
-	            Serial.end();
-	            LowPower.deepSleep();
-	          }
-	        }
-	      }
-	    }
+		          start_check = 'P';
+		          if (bluetooth_flag)
+		          {
+		            bluetooth_flag = 0;
+		            //Serial.println("Sleeping, Bluetooth connected");
+		            Serial.end();
+		            LowPower.deepSleep();
+		          }
+		        }
+		      }
+		    }
+		}
 
 		return SUCCESS;
 	}
@@ -245,37 +267,40 @@ extern "C"
 	uint8_t check_stop_button()
 	{
 
-	    if (stop_check == 'S')
-	    {
-	      unsigned long time_millis2 = millis();
-	      while ((millis() - time_millis2) <= 1000);
-	      while (digitalRead(PBST) == LOW);
-	      if (digitalRead(PBST) == HIGH)
-	      {
-	        Serial.print("SA");
+		if(digitalRead(PBST) == LOW)
+		{
+		    if (stop_check == 'S')
+		    {
+		      unsigned long time_millis2 = millis();
+		      while ((millis() - time_millis2) <= 1000);
+		      while (digitalRead(PBST) == LOW);
+		      if (digitalRead(PBST) == HIGH)
+		      {
+		        Serial.print("SA");
 
-	        unsigned long time_millis = millis();
-	        while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
+		        unsigned long time_millis = millis();
+		        while (!(Serial.available()) && ((millis() - time_millis) <= TIMEOUT));
 
-	        char buffer;
+		        char buffer;
 
-	        if (Serial.available())
-	        {
-	          buffer = Serial.read();
-	        }
+		        if (Serial.available())
+		        {
+		          buffer = Serial.read();
+		        }
 
-	        // Flush all bytes
-	        while (Serial.available())
-	        {
-	          Serial.read();
-	        }
+		        // Flush all bytes
+		        while (Serial.available())
+		        {
+		          Serial.read();
+		        }
 
-	        if (buffer == 'K' || buffer == 'M')
-	        {
-	          stop_check = 'K';
-	        }
-	      }
-	    }
+		        if (buffer == 'K' || buffer == 'M')
+		        {
+		          stop_check = 'K';
+		        }
+		      }
+		    }
+		}
 
 		return SUCCESS;
 	}
@@ -288,9 +313,11 @@ extern "C"
 
 	uint8_t check_reset_button()
 	{
-
-	    while (digitalRead(PBR) == LOW);
-	    Serial.print("R");
+		if(digitalRead(PBR) == LOW)
+		{
+		    while (digitalRead(PBR) == LOW);
+		    Serial.print("R");
+		}
 
 		return SUCCESS;
 	}

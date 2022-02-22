@@ -110,7 +110,7 @@ void loop() {
     if (Serial.peek() == 'N')
     {
       Serial.read();
-      tens_count = 0;
+      activity_count = 0;
       tens_count = 0;
       turn_off_leds = true;
     }
