@@ -3,7 +3,6 @@
 
 static int activity_count = 0;
 static int tens_count = 0;
-uint8_t turn_off_leds = false;
 char start_check = 'M'; // Enable
 char stop_check = 'K';
 uint8_t bluetooth_flag = 0;
@@ -59,6 +58,20 @@ extern "C"
 		return SUCCESS;
 	}
 
+	uint8_t turn_off_leds()
+	{
+
+		// Turn off all LEDs
+		uint32_t leds[] = {P1, P2, P3, P4, P5, P6, P7, P8, P9, P10};
+
+		for(int i = 0; i < 10; i++)
+		{
+			digitalWrite(leds[i], LOW);
+		}
+
+		return SUCCESS;
+	}
+
 	/*********************************************************************************
 	 *	@purpose: check new round message from App
 	 *
@@ -69,24 +82,19 @@ extern "C"
 	{
 		uint8_t state = FAILED;
 
-	    if (Serial.peek() == 'N')
-	    {
-	      Serial.read();
-	      activity_count = 0;
-	      tens_count = 0;
-	      turn_off_leds = true;
-	      state = SUCCESS;
+		if(Serial.available())
+		{
+		    if (Serial.peek() == 'N')
+		    {
+		      Serial.read();
+		      activity_count = 0;
+		      tens_count = 0;
+		      state = SUCCESS;
 
-	      // Turn off all LEDs
-	      uint32_t leds[] = {P1, P2, P3, P4, P5, P6, P7, P8, P9, P10};
+		    }
+		}
 
-	      for(int i = 0; i < 10; i++)
-	      {
-	      	digitalWrite(leds[i], LOW);
-	      }
-	    }
-
-		return SUCCESS;
+		return state;
 	}
 
 	/*********************************************************************************
@@ -95,20 +103,22 @@ extern "C"
 	 *	@return: status, SUCCESS or FAILED
 	 *********************************************************************************/
 
-	uint8_t check_play()
+	uint8_t check_program()
 	{
 		uint8_t state = FAILED;
 
-	    if (Serial.peek() == 'M') // Enable Play button when M is received from App
-	    {
-	      Serial.read();
-	      activity_count = 0;
-	      tens_count = 0;
-	      turn_off_leds = true;
-	      start_check = 'M';
-	      stop_check = 'K';
-	      state = state;
-	    }
+		if(Serial.available())
+		{
+		    if (Serial.peek() == 'M') // Enable Play button when M is received from App
+		    {
+		      Serial.read();
+		      activity_count = 0;
+		      tens_count = 0;
+		      start_check = 'M';
+		      stop_check = 'K';
+		      state = SUCCESS;
+		    }
+		}
 
 		return state;
 	}
@@ -123,19 +133,22 @@ extern "C"
 	{
 		uint8_t state = FAILED;
 
-	    if (Serial.peek() == 'S')
-	    {
-	      Serial.read();
-	      stop_check = 'S';
-	      Serial.println();
-	      state = SUCCESS;
-	    }
-	    else if(Serial.peek() == 'K')
-	    {
-	    	Serial.read();
-	    	stop_check = 'K';
-	    	state = SUCCESS;
-	    }
+		if(Serial.available())
+		{
+		    if (Serial.peek() == 'S')
+		    {
+		      Serial.read();
+		      stop_check = 'S';
+		      Serial.println();
+		      state = SUCCESS;
+		    }
+		    else if(Serial.peek() == 'K')
+		    {
+		    	Serial.read();
+		    	stop_check = 'K';
+		    	state = SUCCESS;
+		    }
+		}
 
 		return state;
 	}
@@ -363,6 +376,12 @@ extern "C"
 		      activity_count = 0;
 		      tens_count++;
 		    }
+		}
+
+		// Flush bytes
+		while(Serial.available())
+		{
+			Serial.read();
 		}
 
 		if(tens_count == 0)

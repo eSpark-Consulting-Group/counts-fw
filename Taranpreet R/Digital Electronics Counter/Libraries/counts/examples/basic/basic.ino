@@ -1,3 +1,7 @@
+#include <Adafruit_MFRC630.h>
+#include <Adafruit_MFRC630_consts.h>
+#include <Adafruit_MFRC630_regs.h>
+
 #include "counts.h"
 
 uint32_t buttons[] = {ACT1, ACT2, ACT3, ACT4, ACT5, ACT6, ACT7, ACT8, ACT9, ACT10};
@@ -10,8 +14,16 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  check_new_round();
-  check_play();
+  if (check_new_round())
+  {
+    turn_off_leds();
+  }
+
+  if (check_program())
+  {
+    turn_off_leds();
+  }
+
   check_stop();
   check_BLE_mode();
   check_sleep();

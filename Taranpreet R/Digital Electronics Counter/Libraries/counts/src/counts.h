@@ -45,7 +45,7 @@ extern "C"
 	// Public functions
 	uint8_t init_counts();
 	uint8_t check_new_round();
-	uint8_t check_play();
+	uint8_t check_program();
 	uint8_t check_stop();
 	uint8_t check_BLE_mode();
 	uint8_t check_sleep();
@@ -54,6 +54,7 @@ extern "C"
 	uint8_t check_reset_button();
 	uint8_t check_button(uint32_t button);
 	uint8_t toggle_led(uint32_t led);
+	uint8_t turn_off_leds();
 
 	// Private functions
 	static void StartISR();
