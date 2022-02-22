@@ -511,7 +511,7 @@ extern "C"
 		else
 		{
 			strncat(activity, &tens_count_charcaters[tens_count + 1], 1);
-
+			strcat(activity, "0");
 		}
 
      	Serial.print(activity);
