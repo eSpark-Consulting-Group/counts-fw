@@ -1,7 +1,3 @@
-#include <Adafruit_MFRC630.h>
-#include <Adafruit_MFRC630_consts.h>
-#include <Adafruit_MFRC630_regs.h>
-
 #include "counts.h"
 
 uint32_t buttons[] = {ACT1, ACT2, ACT3, ACT4, ACT5, ACT6, ACT7, ACT8, ACT9, ACT10};
